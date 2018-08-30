@@ -13,6 +13,12 @@
         <item name="android:windowContentOverlay">@null</item>
     </style>
 
+    <style name="AppTheme.NoActionBar">
+        <item name="colorPrimaryDark">@color/colorPrimary</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
     <style name="ProgressBar" parent="@android:style/Theme.Dialog">
         <item name="android:windowFrame">@null</item>
         <item name="android:windowIsFloating">true</item>
@@ -21,24 +27,6 @@
         <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowNoTitle">true</item>
-    </style>
-
-    <style name="Text">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:textSize">@dimen/text_size_medium</item>
-    </style>
-
-    <style name="Text.Title">
-        <item name="android:gravity">center</item>
-        <item name="android:minHeight">@dimen/height_line_title</item>
-        <item name="android:textSize">@dimen/text_size_large</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@android:color/white</item>
-    </style>
-
-    <style name="Text.Subtitle">
-        <item name="android:textStyle">bold</item>
     </style>
 
 </resources>

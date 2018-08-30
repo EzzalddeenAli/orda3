@@ -1,8 +1,9 @@
-package faith.changliu.orda3.base
+package faith.changliu.orda3.base.activities
 
 import android.os.Bundle
 import android.os.Handler
 import android.support.v7.app.AppCompatActivity
+import faith.changliu.orda3.base.R
 import kotlinx.android.synthetic.main.activity_splash.*
 
 abstract class BaseSplashActivity : AppCompatActivity() {

@@ -19,5 +19,9 @@
             </intent-filter>
         </activity>
 
+        <activity android:name="faith.changliu.orda3.base.activities.BaseLoginActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTop" />
+
     </application>
 </manifest>

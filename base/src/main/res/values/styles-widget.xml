@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Text">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/text_size_medium</item>
+    </style>
+
+    <style name="Text.Title">
+        <item name="android:gravity">center</item>
+        <item name="android:minHeight">@dimen/height_line_title</item>
+        <item name="android:textSize">@dimen/text_size_large</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="Text.Subtitle">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Et">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:ems">10</item>
+        <item name="android:maxLength">200</item>
+        <item name="android:layout_margin">@dimen/space_small</item>
+        <item name="android:padding">12dp</item>
+        <item name="android:background">@drawable/bg_et</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="Et.Linear">
+        <item name="android:layout_width">match_parent</item>
+    </style>
+
+    <style name="Et.Linear.NotFirst">
+        <item name="android:layout_marginTop">0dp</item>
+    </style>
+
+    <style name="Et.WithIcon">
+        <item name="android:textSize">20sp</item>
+        <item name="android:drawablePadding">8dp</item>
+        <item name="android:layout_marginEnd">8dp</item>
+        <item name="android:layout_marginStart">8dp</item>
+    </style>
+
+    <style name="Et.NotFirst">
+        <item name="android:layout_marginTop">0dp</item>
+    </style>
+
+    <style name="Btn">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="Btn.Login">
+        <item name="android:background">@drawable/bg_btn</item>
+    </style>
+
+</resources>
