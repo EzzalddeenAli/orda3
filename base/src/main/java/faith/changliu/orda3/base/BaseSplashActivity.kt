@@ -1,13 +1,13 @@
 package faith.changliu.orda3.base
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
-import android.view.View
-import faith.changliu.orda3.base.utils.readBitmap
+import android.support.v7.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_splash.*
 
 abstract class BaseSplashActivity : AppCompatActivity() {
+	
+	private val mHandler = Handler()
 
 	protected abstract val logoResId: Int
 
@@ -16,10 +16,19 @@ abstract class BaseSplashActivity : AppCompatActivity() {
 		setContentView(R.layout.activity_splash)
 
 		setLogo()
+		
+		mHandler.postDelayed({
+			toMain()
+		}, 2000)
 	}
-
+	
+	/**
+	 * Executed after 2 seconds
+	 */
+	abstract fun toMain()
+	
 	private fun setLogo() {
-		mImvLogo.setImageBitmap(readBitmap(logoResId))
+		mImvLogo.setImageResource(logoResId)
 	}
 
 }

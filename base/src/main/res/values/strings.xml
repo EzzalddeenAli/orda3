@@ -2,4 +2,7 @@
     <string name="app_name">base</string>
     <string name="welcome">WELCOME</string>
     <string name="logo_image">logo image</string>
+    <string name="no_network">No network</string>
+    <string name="confirm">CONFIRM</string>
+    <string name="loading">LOADING…</string>
 </resources>
