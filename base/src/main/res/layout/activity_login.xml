@@ -17,16 +17,19 @@
         android:id="@+id/mImvBox"
         android:layout_width="110dp"
         android:layout_height="110dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginEnd="@dimen/space_small"
+        android:layout_marginStart="@dimen/space_small"
+        android:layout_marginTop="@dimen/space_medium"
         android:src="@drawable/box"
+        android:contentDescription="@string/logo_image"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/mTvTitle" />
 
     <EditText
         android:id="@+id/mEtLoginEmail"
         style="@style/Et.WithIcon"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         android:drawableStart="@drawable/ic_email"
         android:hint="@string/email"
         android:inputType="textEmailAddress"
@@ -47,12 +50,9 @@
 
     <Button
         android:id="@+id/mBtnLogin"
-        style="@style/Btn.Login"
-        android:layout_width="0dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
+        style="@style/Btn"
         android:layout_marginTop="8dp"
-        android:text="Login"
+        android:text="@string/login"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mBtnResetPwd" />
@@ -64,21 +64,16 @@
         android:layout_marginEnd="8dp"
         android:layout_marginTop="8dp"
         android:background="@null"
-        android:text="Forget Password"
-        android:textSize="15dp"
+        android:text="@string/forget_password"
+        android:textSize="15sp"
         android:textStyle="bold|italic"
         app:layout_constraintEnd_toEndOf="@+id/mEtPwd"
         app:layout_constraintTop_toBottomOf="@+id/mEtPwd" />
 
     <Button
         android:id="@+id/mBtnRegister"
-        style="@style/Btn.Login"
-        android:layout_width="0dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
+        style="@style/Btn"
         android:layout_marginTop="8dp"
-        android:text="Become an agent today"
-        android:textSize="18dp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

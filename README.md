@@ -6,6 +6,9 @@ Orlando Yunda is an app designed to facilitate the workflow for Yunda Express ag
 * [Trello](https://goo.gl/jCDEJx)
 * [Prototype](https://goo.gl/kJfgd6)
 
+## Install Instruction
+* Download [Google-services.json](https://goo.gl/R5vjtx) and move the google-services.json file you just downloaded into your Android app module root directory.
+
 ## Features
 * Register by invitation
 * Barcode scan

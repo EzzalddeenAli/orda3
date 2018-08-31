@@ -11,16 +11,25 @@ import kotlinx.coroutines.experimental.async
 import org.jetbrains.anko.toast
 
 
-class BaseLoginActivity : BaseActivity(), View.OnClickListener {
+abstract class BaseLoginActivity : BaseActivity(), View.OnClickListener {
+
+	protected abstract val registerTextResId: Int
+
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		setContentView(R.layout.activity_login)
+
+		setupViews()
 		
 		mBtnLogin.setOnClickListener(this)
 		mBtnRegister.setOnClickListener(this)
 		mBtnResetPwd.setOnClickListener(this)
 	}
-	
+
+	private fun setupViews() {
+		mBtnRegister.setText(registerTextResId)
+	}
+
 	override fun onClick(v: View) {
 		when (v.id) {
 			R.id.mBtnLogin -> login()
