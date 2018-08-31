@@ -32,6 +32,8 @@
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/mNavBottom"
         app:menu="@menu/menu_navigation"
+        app:itemIconTint="@drawable/slt_menu_item"
+        app:itemTextColor="@drawable/slt_menu_item"
         android:layout_width="match_parent"
         android:layout_height="60dp" />
 
