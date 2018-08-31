@@ -12,4 +12,5 @@
     <string name="forget_password">Forget Password</string>
     <string name="become_an_agent_today">Become an agent today</string>
     <string name="register">Register</string>
+    <string name="confirm_to_delete">Confirm to delete</string>
 </resources>
