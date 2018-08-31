@@ -23,5 +23,8 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:launchMode="singleTop" />
 
+        <activity android:name=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
     </application>
 </manifest>

@@ -9,7 +9,7 @@ class AgentSplashActivity : BaseSplashActivity() {
 	override val logoResId: Int = R.drawable.box
 	
 	override fun toMain() {
-		val intent = Intent(this, BaseLoginActivity::class.java).clearTop()
+		val intent = Intent(this, MainActivity::class.java).clearTop()
 		startActivity(intent)
 		finish()
 	}
