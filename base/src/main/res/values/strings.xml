@@ -14,4 +14,5 @@
     <string name="register_traveler">Register</string>
     <string name="confirm_to_delete">Confirm to delete</string>
     <string name="submit">Submit</string>
+    <string name="name">Name</string>
 </resources>

@@ -16,6 +16,8 @@ data class User(val id: String,
 				val createdAt: Date,
 				val status: Int) {
 	constructor() : this("", "", "", "", 0, 0, 0, Date(), 0)
+	constructor(email: String, name: String)
+			: this(email, email, "", name, 0, 0, 0, Date(), 0)
 }
 
 @Entity(tableName = "orders")

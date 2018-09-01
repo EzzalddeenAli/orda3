@@ -16,7 +16,6 @@ import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.launch
-import org.jetbrains.anko.email
 import org.jetbrains.anko.toast
 
 class RegisterAgentDialog(ctx: Context) : BaseDialog(ctx), View.OnClickListener {
@@ -30,6 +29,7 @@ class RegisterAgentDialog(ctx: Context) : BaseDialog(ctx), View.OnClickListener 
 	override fun onClick(v: View) {
 		if (v.id == mBtnSubmit.id) {
 			val email = mEtEmail.getString() ?: return
+			val name = mEtName.getString() ?: return
 
 			ifConnected {
 				launch(UI) {
@@ -40,41 +40,19 @@ class RegisterAgentDialog(ctx: Context) : BaseDialog(ctx), View.OnClickListener 
 						}.await()
 
 						if (isRegistered) {
-							// todo: get user type
-							val userType = async(CommonPool) {
-								FireDB.getUserTypeWithEmail(email)
-							}.await()
-
-							// check user type
-							if (userType == UserType.TRAVELER) {
-
-								// todo: notify manager to handle it, change UserType from traveler to both after signing contract, etc.
-								this@RegisterAgentDialog.context.toast("From Traveler to Agent function to be added")
-								dismiss()
-							} else {
-								this@RegisterAgentDialog.apply {
-									context.toast("User already registered")
-									dismiss()
-								}
-							}
+							checkUserType(email)
 						}
 						else {
-							with(this@RegisterAgentDialog.context) {
-								// todo: get real user
-								val userId = System.currentTimeMillis().toString()
-								val newUser = User()
-								async(CommonPool) {
-									FireDB.saveAgentRegisterRequest(newUser)
-								}.await()
-
-								toast("Register Request submitted.")
-								dismiss()
-							}
+							// todo: get real user
+							val newUser = User(email, name)
+							async(CommonPool) {
+								FireDB.saveAgentRegisterRequest(newUser)
+							}.await()
+							dismissWithToast("Register Request submitted.")
 						}
 
 					} catch (ex: Exception) {
 						ex.printStackTrace()
-						log(ex.localizedMessage)
 					} finally {
 						// todo: finally sometimes is omitted
 						mLoading.stopLoading()
@@ -82,5 +60,25 @@ class RegisterAgentDialog(ctx: Context) : BaseDialog(ctx), View.OnClickListener 
 				}
 			}
 		}
+	}
+
+	private suspend inline fun checkUserType(email: String) {
+		// todo: get user type
+		val userType = async(CommonPool) {
+			FireDB.getUserTypeWithEmail(email)
+		}.await()
+
+		// check user type
+		if (userType == UserType.TRAVELER) {
+			// todo: notify manager to handle it, change UserType from traveler to both after signing contract, etc.
+			dismissWithToast("From Traveler to Agent function to be added")
+		} else {
+			dismissWithToast("User already registered")
+		}
+	}
+
+	private fun dismissWithToast(msg: String) {
+		context.toast(msg)
+		dismiss()
 	}
 }
