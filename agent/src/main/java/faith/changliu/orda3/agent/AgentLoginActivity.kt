@@ -1,8 +1,16 @@
 package faith.changliu.orda3.agent
 
 import faith.changliu.orda3.base.activities.BaseLoginActivity
+import faith.changliu.orda3.base.widgets.RegisterAgentDialog
 
 class AgentLoginActivity : BaseLoginActivity() {
-	override val registerTextResId = R.string.become_an_agent_today
+	override fun toMain() {
+		startActivitySingleTop(MainActivity::class.java)
+	}
 
+	override val mRegisterTextResId = R.string.register_agent
+
+	override fun register() {
+		RegisterAgentDialog(this).show()
+	}
 }

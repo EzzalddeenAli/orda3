@@ -10,7 +10,8 @@
     <string name="password">Password</string>
     <string name="login">Login</string>
     <string name="forget_password">Forget Password</string>
-    <string name="become_an_agent_today">Become an agent today</string>
-    <string name="register">Register</string>
+    <string name="register_agent">Become an agent today</string>
+    <string name="register_traveler">Register</string>
     <string name="confirm_to_delete">Confirm to delete</string>
+    <string name="submit">Submit</string>
 </resources>

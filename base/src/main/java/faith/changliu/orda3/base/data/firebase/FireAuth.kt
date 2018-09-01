@@ -14,7 +14,6 @@ object FireAuth {
 		mAuth.signInWithEmailAndPassword(email, pwd).addOnSuccessListener { authResult ->
 			cont.resume(authResult.user.uid)
 		}.addOnFailureListener { ex ->
-			ex.printStackTrace()
 			cont.resumeWithException(ex)
 		}.addOnCanceledListener { cont.cancel() }
 	}
@@ -23,13 +22,32 @@ object FireAuth {
 		mAuth.sendPasswordResetEmail(email).addOnSuccessListener {
 			AppContext.toast("Reset password email sent")
 		}.addOnFailureListener {
-			it.printStackTrace()
 			AppContext.toast("Error: ${it.localizedMessage}")
 		}
 	}
 	
 	fun logout() {
 		mAuth.signOut()
+	}
+
+	suspend fun isEmailRegistered(email: String) = suspendCancellableCoroutine<Boolean> { cont ->
+		mAuth.fetchSignInMethodsForEmail(email).addOnSuccessListener {
+			val methods = it.signInMethods
+			if (methods == null || methods.isEmpty()) cont.resume(false)
+			else cont.resume(true)
+		}.addOnFailureListener { ex ->
+			cont.resumeWithException(ex)
+		}.addOnCanceledListener { cont.cancel() }
+	}
+
+	suspend fun register(email: String, pwd: String) = suspendCancellableCoroutine<String> { cont ->
+		mAuth.createUserWithEmailAndPassword(email, pwd).addOnSuccessListener { authResult ->
+			// todo: email verification
+//			authResult.user.sendEmailVerification()
+			cont.resume(authResult.user.uid)
+		}.addOnFailureListener { ex ->
+			cont.resumeWithException(ex)
+		}.addOnCanceledListener { cont.cancel() }
 	}
 	
 }

@@ -3,10 +3,12 @@ package faith.changliu.orda3.base.activities
 import android.os.Bundle
 import android.os.Handler
 import android.support.v7.app.AppCompatActivity
+import faith.changliu.orda3.base.BaseActivity
 import faith.changliu.orda3.base.R
+import faith.changliu.orda3.base.data.firebase.FireAuth
 import kotlinx.android.synthetic.main.activity_splash.*
 
-abstract class BaseSplashActivity : AppCompatActivity() {
+abstract class BaseSplashActivity : BaseActivity() {
 	
 	private val mHandler = Handler()
 
@@ -19,14 +21,15 @@ abstract class BaseSplashActivity : AppCompatActivity() {
 		setLogo()
 		
 		mHandler.postDelayed({
-			toMain()
+
+			if (FireAuth.isLoggedIn()) toMain()
+			else toLogin()
+
 		}, 2000)
 	}
-	
-	/**
-	 * Executed after 2 seconds
-	 */
-	abstract fun toMain()
+
+	protected abstract fun toLogin()
+	protected abstract fun toMain()
 	
 	private fun setLogo() {
 		mImvLogo.setImageResource(logoResId)

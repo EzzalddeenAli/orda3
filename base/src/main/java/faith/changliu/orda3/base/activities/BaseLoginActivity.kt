@@ -4,6 +4,11 @@ import android.os.Bundle
 import android.view.View
 import faith.changliu.orda3.base.BaseActivity
 import faith.changliu.orda3.base.R
+import faith.changliu.orda3.base.data.firebase.FireAuth
+import faith.changliu.orda3.base.data.firebase.firestore.FireDB
+import faith.changliu.orda3.base.data.models.User
+import faith.changliu.orda3.base.data.models.UserType
+import faith.changliu.orda3.base.data.preferences.UserPref
 import faith.changliu.orda3.base.utils.*
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.coroutines.experimental.CommonPool
@@ -13,7 +18,11 @@ import org.jetbrains.anko.toast
 
 abstract class BaseLoginActivity : BaseActivity(), View.OnClickListener {
 
-	protected abstract val registerTextResId: Int
+	protected abstract val mRegisterTextResId: Int
+	private val mUserType: Int by lazy {
+		if (mRegisterTextResId == R.string.register_agent) UserType.AGENT
+		else UserType.TRAVELER
+	}
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
@@ -27,7 +36,7 @@ abstract class BaseLoginActivity : BaseActivity(), View.OnClickListener {
 	}
 
 	private fun setupViews() {
-		mBtnRegister.setText(registerTextResId)
+		mBtnRegister.setText(mRegisterTextResId)
 	}
 
 	override fun onClick(v: View) {
@@ -40,11 +49,11 @@ abstract class BaseLoginActivity : BaseActivity(), View.OnClickListener {
 	
 	private fun resetPwd() {
 		val email = mEtLoginEmail.getEmail() ?: return
+		FireAuth.resetPassword(email)
 	}
 	
-	private fun register() {
-//		val dialog = RegisterDialog(this)
-//		dialog.show()
+	protected open fun register() {
+
 	}
 	
 	private fun login() {
@@ -53,21 +62,36 @@ abstract class BaseLoginActivity : BaseActivity(), View.OnClickListener {
 		
 		ifConnected {
 			tryBlock {
+				// try login and get user id
 				val userId = async(CommonPool) {
-					"Try login"
+					FireAuth.login(email, pwd)
 				}.await()
-				
-				toast("Logging in")
+
+				// check user type
+				val user = async(CommonPool) {
+					FireDB.readUserWithId(userId)
+				}.await()
+
+				ifUserTypeRight(user.type) {
+					UserPref.mUser = user
+					toMain()
+				}
 			}
 		}
-		
-		
 	}
-	
-//	private fun toMain() {
-//		val intent = Intent(this, MainActivity::class.java)
-//		intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-//		startActivity(intent)
-//		finish()
-//	}
+
+	protected abstract fun toMain()
+
+	private inline fun ifUserTypeRight(userType: Int, onUserTypeRight: () -> Unit) {
+		if (userType == mUserType) {
+			toast("Log in successful")
+			onUserTypeRight()
+		} else {
+			toast("User not registered")
+			FireAuth.logout()
+		}
+	}
+
+
+
 }

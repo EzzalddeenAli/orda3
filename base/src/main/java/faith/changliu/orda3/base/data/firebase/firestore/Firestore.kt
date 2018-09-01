@@ -4,6 +4,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import faith.changliu.orda3.base.data.models.Order
 import faith.changliu.orda3.base.data.models.Request
 import faith.changliu.orda3.base.data.models.RequestApplication
+import faith.changliu.orda3.base.data.models.User
 
 object FireDB {
 	private val mFirestore: FirebaseFirestore by lazy { FirebaseFirestore.getInstance() }
@@ -52,6 +53,30 @@ object FireDB {
 
 	suspend fun readAllApplicationsWithRequestId(requestId: String): ArrayList<RequestApplication> {
 		return mFirestore.readAllApplicationsWithRequestId(requestId)
+	}
+
+	// endregion
+
+	// region { User }
+
+	suspend fun saveUser(user: User) {
+		mFirestore.saveUser(user)
+	}
+
+	suspend fun readUserWithId(id: String): User {
+		return mFirestore.readUserWithId(id)
+	}
+
+	suspend fun getUserTypeWithEmail(email: String): Int {
+		return mFirestore.getUserTypeWithEmail(email)
+	}
+
+	// endregion
+
+	// region { Agent Register Requests }
+
+	suspend fun saveAgentRegisterRequest(user: User) {
+		mFirestore.saveAgentRegisterRequest(user)
 	}
 
 	// endregion

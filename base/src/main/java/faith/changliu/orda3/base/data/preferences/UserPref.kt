@@ -10,8 +10,6 @@ object UserPref {
 	
 	private val mSp: SharedPreferences by lazy { AppContext.getSharedPreferences("user_pref", Context.MODE_PRIVATE) }
 	var mUser: User by Delegates.observable(User()) { property, oldValue, newValue ->
-		println(oldValue)
-		println(newValue)
 		setId(newValue.id)
 	}
 	
