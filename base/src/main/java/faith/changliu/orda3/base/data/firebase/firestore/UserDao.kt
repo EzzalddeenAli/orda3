@@ -1,7 +1,6 @@
 package faith.changliu.orda3.base.data.firebase.firestore
 
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Source
 import faith.changliu.orda3.base.data.models.User
 import kotlinx.coroutines.experimental.suspendCancellableCoroutine
 
@@ -25,7 +24,6 @@ suspend fun FirebaseFirestore.readUserWithId(id: String) = suspendCancellableCor
 		documentSnapshot.toObject(User::class.java)?.let { user ->
 			cont.resume(user)
 		}
-		cont.resumeWithException(Throwable("Null User"))
 	}.addOnFailureListener { exception ->
 		cont.resumeWithException(exception)
 	}.addOnCanceledListener { cont.cancel() }

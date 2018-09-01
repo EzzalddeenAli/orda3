@@ -6,7 +6,6 @@ import faith.changliu.orda3.base.BaseActivity
 import faith.changliu.orda3.base.R
 import faith.changliu.orda3.base.data.firebase.FireAuth
 import faith.changliu.orda3.base.data.firebase.firestore.FireDB
-import faith.changliu.orda3.base.data.models.User
 import faith.changliu.orda3.base.data.models.UserType
 import faith.changliu.orda3.base.data.preferences.UserPref
 import faith.changliu.orda3.base.utils.*
@@ -91,7 +90,4 @@ abstract class BaseLoginActivity : BaseActivity(), View.OnClickListener {
 			FireAuth.logout()
 		}
 	}
-
-
-
 }
