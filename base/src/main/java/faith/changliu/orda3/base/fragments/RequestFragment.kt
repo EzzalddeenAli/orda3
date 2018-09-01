@@ -1,8 +1,6 @@
 package faith.changliu.orda3.base.fragments
 
 import android.arch.lifecycle.Observer
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
@@ -10,18 +8,32 @@ import android.view.View
 import android.view.ViewGroup
 import faith.changliu.orda3.base.BaseFragment
 import faith.changliu.orda3.base.R
-import faith.changliu.orda3.base.data.AppRepository
+import faith.changliu.orda3.base.data.models.Request
 import faith.changliu.orda3.base.data.viewmodels.RequestViewModel
-import faith.changliu.orda3.base.utils.tryBlock
 import kotlinx.android.synthetic.main.fragment_requests.*
-import kotlinx.coroutines.experimental.CommonPool
-import kotlinx.coroutines.experimental.async
+import kotlinx.android.synthetic.main.fragment_requests_list.*
 import org.jetbrains.anko.support.v4.toast
 
 class RequestsFragment : BaseFragment(), View.OnClickListener {
 
 	private val mViewModel by lazy { RequestViewModel() }
 	private lateinit var mRequestAdapter: RequestsAdapter
+
+	private val toDetail by lazy {
+		if (include_request_detail == null)
+			{ request: Request ->
+				// todo: phone
+				toast("Phone: " + request.toString())
+				Unit
+			}
+		 else
+			{ request: Request ->
+				// todo: tablet
+				toast("Tablet: " + request.toString())
+				Unit
+			}
+
+	}
 
 	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
 							  savedInstanceState: Bundle?): View? {
@@ -33,20 +45,21 @@ class RequestsFragment : BaseFragment(), View.OnClickListener {
 		super.onViewCreated(view, savedInstanceState)
 		mFabAddRequest.setOnClickListener(this)
 
+		// setup for both phone and tablet
 		mRcvRequests.layoutManager = LinearLayoutManager(context)
+
 		// todo: implement onUpdate, onDelete
-		mRequestAdapter = RequestsAdapter(arrayListOf(), {toast("Feature to be added")}, {
-			request ->
-			this.tryBlock {
-				async(CommonPool) {
-					AppRepository.deleteRequest(request.id)
-				}.await()
-				toast("Deleted")
-			}
-		}, { request ->
-			// todo: enable
-//			toDetail()
-		})
+		mRequestAdapter = RequestsAdapter(arrayListOf(), toDetail)
+
+		// check which layout
+		if (include_request_detail == null) {
+			// setup for phone
+		} else {
+			// setup for tablet
+		}
+
+
+
 	}
 
 	// todo: enable

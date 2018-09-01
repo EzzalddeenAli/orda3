@@ -11,8 +11,6 @@ import kotlinx.android.synthetic.main.cell_request.view.*
 
 class RequestsAdapter(
 		var requests: ArrayList<Request>,
-		private val onUpdate: (Request) -> Unit,
-		private val onDelete: (Request) -> Unit,
 		private val onClick: (Request) -> Unit
 ) : RecyclerView.Adapter<RequestsAdapter.ViewHolder>() {
 
@@ -36,15 +34,6 @@ class RequestsAdapter(
 				mTvTitle.text = request.title
 				mTvMemo.text = request.description
 
-				// todo: enable
-//				mBtnDelete.setOnClickListener {
-//					snackConfirm(context.getString(R.string.confirm_to_delete)) {
-//						onDelete(request)
-//					}
-//				}
-//				mBtnEdit.setOnClickListener {
-//					onUpdate(request)
-//				}
 				mCellView.setOnClickListener {
 					onClick(request)
 				}

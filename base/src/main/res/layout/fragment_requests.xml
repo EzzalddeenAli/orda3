@@ -4,13 +4,15 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/mRcvRequests"
-        android:layout_width="match_parent"
+    <include
+        android:id="@+id/include_requests_list"
+        layout="@layout/fragment_requests_list"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:padding="@dimen/space_small"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
