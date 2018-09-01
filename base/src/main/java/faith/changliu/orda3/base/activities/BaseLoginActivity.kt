@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import faith.changliu.orda3.base.BaseActivity
 import faith.changliu.orda3.base.R
+import faith.changliu.orda3.base.data.AppRepository
 import faith.changliu.orda3.base.data.firebase.FireAuth
 import faith.changliu.orda3.base.data.firebase.firestore.FireDB
 import faith.changliu.orda3.base.data.models.UserType
@@ -58,23 +59,25 @@ abstract class BaseLoginActivity : BaseActivity(), View.OnClickListener {
 	private fun login() {
 		val email = mEtLoginEmail.getEmail() ?: return
 		val pwd = mEtPwd.getString() ?: return
-		
-		ifConnected {
-			tryBlock {
-				// try login and get user id
-				val userId = async(CommonPool) {
-					FireAuth.login(email, pwd)
-				}.await()
 
-				// check user type
-				val user = async(CommonPool) {
-					FireDB.readUserWithId(userId)
-				}.await()
+		tryBlock {
+			// try login and get user id
+			val userId = async(CommonPool) {
+				FireAuth.login(email, pwd)
+			}.await()
 
-				ifUserTypeRight(user.type) {
-					UserPref.mUser = user
-					toMain()
-				}
+			// check user type
+			val user = async(CommonPool) {
+				FireDB.readUserWithId(userId)
+			}.await()
+
+			ifUserTypeRight(user.type) {
+				UserPref.mUser = user
+
+				// sync data
+				AppRepository.syncAll()
+
+				toMain()
 			}
 		}
 	}

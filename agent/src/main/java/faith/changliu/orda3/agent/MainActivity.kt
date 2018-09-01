@@ -10,7 +10,9 @@ import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.view.MenuItem
 import faith.changliu.orda3.base.BaseActivity
+import faith.changliu.orda3.base.data.AppRepository
 import faith.changliu.orda3.base.fragments.RequestsFragment
+import faith.changliu.orda3.base.utils.tryBlock
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 
@@ -37,8 +39,6 @@ class MainActivity : BaseActivity(),
 		super.onCreate(savedInstanceState)
 		setContentView(R.layout.activity_main)
 		setSupportActionBar(toolbar)
-
-
 
 		// init views
 		mPager.apply {
