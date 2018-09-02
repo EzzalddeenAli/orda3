@@ -24,7 +24,7 @@
 
             <include
                 android:id="@+id/include_request_detail"
-                layout="@layout/fragment_request_detail_text_data"
+                layout="@layout/fragment_request_detail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 

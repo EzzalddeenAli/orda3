@@ -8,17 +8,32 @@ import android.view.View
 import android.view.ViewGroup
 import faith.changliu.orda3.base.BaseFragment
 import faith.changliu.orda3.base.R
+import faith.changliu.orda3.base.data.AppRepository
 import faith.changliu.orda3.base.data.models.Request
 import faith.changliu.orda3.base.data.viewmodels.RequestViewModel
+import faith.changliu.orda3.base.utils.snackConfirm
+import faith.changliu.orda3.base.utils.tryBlock
+import kotlinx.android.synthetic.main.fragment_applications_list.*
 import kotlinx.android.synthetic.main.fragment_request_detail_text_data.*
 import kotlinx.android.synthetic.main.fragment_requests.*
 import kotlinx.android.synthetic.main.fragment_requests_list.*
+import kotlinx.coroutines.experimental.CommonPool
+import kotlinx.coroutines.experimental.async
 import org.jetbrains.anko.support.v4.toast
+import kotlin.properties.Delegates
 
 class RequestsFragment : BaseFragment(), View.OnClickListener {
 
 	private val mViewModel by lazy { RequestViewModel() }
 	private lateinit var mRequestAdapter: RequestsAdapter
+	// for tablet only
+	private var mDisplayedRequest by Delegates.observable(Request()) { _, _, newValue ->
+		if (newValue.id.isEmpty() ) {
+
+		} else {
+			bind(newValue)
+		}
+	}
 
 	private val onUpdate by lazy {
 		if (include_request_detail == null)
@@ -30,7 +45,7 @@ class RequestsFragment : BaseFragment(), View.OnClickListener {
 		else
 			{ request: Request ->
 				// todo: tablet
-				bind(request)
+				mDisplayedRequest = request
 			}
 	}
 
@@ -43,9 +58,14 @@ class RequestsFragment : BaseFragment(), View.OnClickListener {
 			}
 		else
 			{ request: Request ->
-				// todo: tablet
-				toast("Tablet: " + request.toString())
-				Unit
+				mFabAddRequest.snackConfirm("Confirm Delete Request") { _ ->
+					tryBlock {
+						async(CommonPool) {
+							AppRepository.deleteRequest(request.id)
+						}.await()
+						toast("Deleted")
+					}
+				}
 			}
 	}
 
@@ -70,6 +90,7 @@ class RequestsFragment : BaseFragment(), View.OnClickListener {
 			// setup for phone
 		} else {
 			// setup for tablet
+			mRcvApplications.layoutManager = LinearLayoutManager(context)
 		}
 
 
@@ -117,6 +138,9 @@ class RequestsFragment : BaseFragment(), View.OnClickListener {
 		mEtVolume.setText("${request.volume}")
 		mEtCompensation.setText("${request.compensation}")
 		mEtDescription.setText(request.description)
+
+		// applications
+
 	}
 
 	private fun getStatus(status: Int): String {
