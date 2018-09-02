@@ -65,7 +65,9 @@ class Rating(val id: String,
 			 var travelerId: String,
 			 var rate: Double,
 			 val createdAt: Date,
-			 var comment: String)
+			 var comment: String) {
+	constructor() : this("", "", "", 0.0, Date(), "")
+}
 
 object UserStatus {
 	const val PENDING = 0
