@@ -4,14 +4,21 @@ import android.arch.lifecycle.Observer
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import faith.changliu.orda3.base.BaseActivity
+import faith.changliu.orda3.base.data.firebase.firestore.FireDB
 import faith.changliu.orda3.base.data.models.Request
+import faith.changliu.orda3.base.data.models.RequestApplication
 import faith.changliu.orda3.base.data.preferences.UserPref
 import faith.changliu.orda3.base.data.viewmodels.RequestViewModel
 import faith.changliu.orda3.base.utils.snackConfirm
+import faith.changliu.orda3.base.utils.tryBlock
 
 import kotlinx.android.synthetic.main.activity_traveler_main.*
 import kotlinx.android.synthetic.main.content_traveler_main.*
+import kotlinx.coroutines.experimental.CommonPool
+import kotlinx.coroutines.experimental.async
+import org.jetbrains.anko.email
 import org.jetbrains.anko.toast
+import java.util.*
 
 class TravelerMainActivity : BaseActivity() {
 
@@ -22,7 +29,25 @@ class TravelerMainActivity : BaseActivity() {
 		{ request: Request ->
 			// todo:
 			mRcvRequests.snackConfirm(request.toString()) {
-				toast("Applied")
+				// todo: more efficient way to get id
+				val id = request.id + UserPref.getId().subSequence(0, 3)
+				val newApplication = RequestApplication(id, request.id, UserPref.getId(), Date())
+
+				tryBlock {
+					// check if id exists
+					val hasApplied = async(CommonPool) {
+						FireDB.hasApplied(id)
+					}.await()
+
+					if (hasApplied) {
+						toast("You Already Applied")
+					} else {
+						async(CommonPool) {
+							FireDB.saveApplication(newApplication)
+						}.await()
+						toast("Apply Submitted")
+					}
+				}
 			}
 		}
 	}
@@ -30,7 +55,7 @@ class TravelerMainActivity : BaseActivity() {
 	private val onContactAgent by lazy {
 		{ request: Request ->
 			// todo:
-			toast("Contact ${request.agentEmail}")
+			email(request.agentEmail, "Apply Request ${request.title}", "May I ask if the request is still up and...")
 			Unit
 		}
 	}
@@ -44,7 +69,7 @@ class TravelerMainActivity : BaseActivity() {
 		mRequestAdapter = TravelerRequestsAdapter(arrayListOf(), onContactAgent, onApply)
 
 		// todo: debug, to be removed
-		toast(UserPref.mUser.toString())
+		toast(UserPref.getId())
 	}
 
 	override fun onResume() {

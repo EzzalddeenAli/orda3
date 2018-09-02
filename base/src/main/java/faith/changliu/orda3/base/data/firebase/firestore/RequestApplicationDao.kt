@@ -29,6 +29,17 @@ suspend fun FirebaseFirestore.readAllApplicationsWithRequestId(requestId: String
 	}
 }
 
+suspend fun FirebaseFirestore.hasApplied(id: String) = suspendCancellableCoroutine<Boolean> { cont ->
+	collection(REQUEST_APPLICATIONS).whereEqualTo("id", id).get().addOnSuccessListener { querySnapshot ->
+		cont.resume(querySnapshot.isEmpty.not())
+	}.addOnFailureListener { exception ->
+		exception.printStackTrace()
+		cont.resumeWithException(exception)
+	}.addOnCanceledListener {
+		cont.cancel(Throwable("Cancelled"))
+	}
+}
+
 fun QuerySnapshot.toApplications(): ArrayList<RequestApplication> {
 	val applications = arrayListOf<RequestApplication>()
 	forEach { doc ->

@@ -52,6 +52,10 @@ object FireDB {
 		return mFirestore.readAllApplicationsWithRequestId(requestId)
 	}
 
+	suspend fun hasApplied(id: String): Boolean {
+		return mFirestore.hasApplied(id)
+	}
+
 	// endregion
 
 	// region { User }

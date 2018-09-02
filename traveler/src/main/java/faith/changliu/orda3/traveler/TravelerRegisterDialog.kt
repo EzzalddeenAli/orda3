@@ -8,6 +8,7 @@ import faith.changliu.orda3.base.data.firebase.firestore.FireDB
 import faith.changliu.orda3.base.data.models.User
 import faith.changliu.orda3.base.data.models.UserStatus
 import faith.changliu.orda3.base.data.models.UserType
+import faith.changliu.orda3.base.data.preferences.UserPref
 import faith.changliu.orda3.base.utils.getEmail
 import faith.changliu.orda3.base.utils.getString
 import faith.changliu.orda3.base.utils.ifConnected
@@ -59,6 +60,9 @@ class TravelerRegisterDialog(ctx: Context, private val toMain: () -> Unit) : Bas
 							async(CommonPool) {
 								FireDB.saveUser(newUser)
 							}.await()
+
+							UserPref.mUser = newUser
+
 							dismissWithToast("Registered")
 							toMain()
 						}

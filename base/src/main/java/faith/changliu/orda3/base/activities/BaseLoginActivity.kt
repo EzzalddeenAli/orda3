@@ -52,9 +52,7 @@ abstract class BaseLoginActivity : BaseActivity(), View.OnClickListener {
 		FireAuth.resetPassword(email)
 	}
 	
-	protected open fun register() {
-
-	}
+	abstract fun register()
 	
 	private fun login() {
 		val email = mEtLoginEmail.getEmail() ?: return
