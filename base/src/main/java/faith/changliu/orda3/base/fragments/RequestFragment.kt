@@ -48,7 +48,8 @@ class RequestsFragment : BaseFragment(), View.OnClickListener {
 		include_requests_list.setVisible(!newValue)
 		mDisplayDataLayout.setVisible(!newValue)
 		mFabAddRequest.setVisible(!newValue)
-		mEtStatus.setVisible(!newValue)
+		mEtStatusLayout.setVisible(!newValue)
+		mEtAssignedToLayout.setVisible(!newValue)
 		// show
 		mBtnSubmitNewRequest.setVisible(newValue)
 		mBtnCancelNewRequest.setVisible(newValue)
