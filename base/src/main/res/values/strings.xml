@@ -15,4 +15,6 @@
     <string name="confirm_to_delete">Confirm to delete</string>
     <string name="submit">Submit</string>
     <string name="name">Name</string>
+    <string name="update">Update</string>
+    <string name="delete">Delete</string>
 </resources>

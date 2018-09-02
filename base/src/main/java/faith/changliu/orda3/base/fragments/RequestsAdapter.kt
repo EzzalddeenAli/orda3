@@ -6,12 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import faith.changliu.orda3.base.R
 import faith.changliu.orda3.base.data.models.Request
-import faith.changliu.orda3.base.utils.snackConfirm
 import kotlinx.android.synthetic.main.cell_request.view.*
+import kotlin.properties.Delegates
 
 class RequestsAdapter(
 		var requests: ArrayList<Request>,
-		private val onClick: (Request) -> Unit
+		private val onUpdate: (Request) -> Unit,
+		private val onDelete: (Request) -> Unit
 ) : RecyclerView.Adapter<RequestsAdapter.ViewHolder>() {
 
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -29,13 +30,23 @@ class RequestsAdapter(
 
 	inner class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
 
+		private var isOpen by Delegates.observable(false) { _, _, newValue ->
+			itemView.mLayoutReveal.visibility = if (newValue) View.VISIBLE else View.GONE
+		}
+
 		fun bind(request: Request) {
 			itemView.apply {
 				mTvTitle.text = request.title
 				mTvMemo.text = request.description
+				mBtnUpdateRequest.setOnClickListener {
+					onUpdate(request)
+				}
+				mBtnDeleteRequest.setOnClickListener {
+					onDelete(request)
+				}
 
 				mCellView.setOnClickListener {
-					onClick(request)
+					isOpen = !isOpen
 				}
 			}
 		}
