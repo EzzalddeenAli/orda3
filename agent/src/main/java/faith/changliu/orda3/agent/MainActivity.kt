@@ -10,6 +10,7 @@ import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.view.MenuItem
 import faith.changliu.orda3.base.BaseActivity
+import faith.changliu.orda3.base.BaseFragment
 import faith.changliu.orda3.base.fragments.RequestsFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
@@ -18,9 +19,7 @@ class MainActivity : BaseActivity(),
 		NavigationView.OnNavigationItemSelectedListener,
 		BottomNavigationView.OnNavigationItemSelectedListener {
 
-	private val frags: List<Fragment> by lazy {
-		listOf(RequestsFragment(), RequestsFragment(), RequestsFragment())
-	}
+	private lateinit var frags: List<BaseFragment>
 	private val mSectionsPagerAdapter by lazy { SectionsPagerAdapter(supportFragmentManager) }
 
 	private val onPageChangeListener by lazy {
@@ -37,6 +36,8 @@ class MainActivity : BaseActivity(),
 		super.onCreate(savedInstanceState)
 		setContentView(R.layout.activity_main)
 		setSupportActionBar(toolbar)
+
+		frags = listOf(OrderFragment(), RequestsFragment(), AccountFragment())
 
 		// init views
 		mPager.apply {

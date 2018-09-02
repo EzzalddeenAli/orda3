@@ -28,7 +28,7 @@ data class Order(@PrimaryKey val id: String, // barcode
 				 val createdAt: Date,
 				 val pickedAt: Date,
 				 val createdBy: String,
-				 var description: String) {
+				 var description: String) : Serializable {
 	@Ignore
 	constructor() : this("", "", 0.0, 0.0, Date(), Date(), "", "")
 }
