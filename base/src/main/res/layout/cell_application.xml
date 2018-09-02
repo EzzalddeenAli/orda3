@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:baselineAligned="false"
@@ -65,24 +65,24 @@
 
     <LinearLayout
         android:id="@+id/mLayoutReveal"
-        android:visibility="gone"
         android:layout_width="wrap_content"
+        android:visibility="gone"
         android:orientation="horizontal"
         android:layout_gravity="center_vertical"
         android:layout_height="wrap_content">
-        <ImageButton
-            android:id="@+id/mBtnUpdateRequest"
-            android:src="@drawable/ic_edit"
-            android:contentDescription="@string/update"
-            android:backgroundTint="@color/colorPrimaryMedium"
+
+        <Button
+            android:id="@+id/mBtnCancel"
+            android:text="Cancel"
+            android:textColor="@color/black_overlay"
+            android:backgroundTint="@android:color/holo_red_light"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
-
-        <ImageButton
-            android:id="@+id/mBtnDeleteRequest"
-            android:src="@drawable/ic_delete"
-            android:contentDescription="@string/delete"
-            android:backgroundTint="@android:color/holo_red_light"
+        <Button
+            android:id="@+id/mBtnAssign"
+            android:text="ASSIGN"
+            android:textColor="@color/white_overlay"
+            android:backgroundTint="@color/colorPrimaryMedium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>

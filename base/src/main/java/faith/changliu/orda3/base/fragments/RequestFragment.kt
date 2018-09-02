@@ -13,29 +13,45 @@ import faith.changliu.orda3.base.adapters.RequestsAdapter
 import faith.changliu.orda3.base.data.AppRepository
 import faith.changliu.orda3.base.data.firebase.firestore.FireDB
 import faith.changliu.orda3.base.data.models.Request
+import faith.changliu.orda3.base.data.models.RequestStatus
+import faith.changliu.orda3.base.data.preferences.UserPref
 import faith.changliu.orda3.base.data.viewmodels.RequestViewModel
-import faith.changliu.orda3.base.utils.snackConfirm
-import faith.changliu.orda3.base.utils.tryBlock
+import faith.changliu.orda3.base.utils.*
 import kotlinx.android.synthetic.main.fragment_applications_list.*
+import kotlinx.android.synthetic.main.fragment_request_detail.*
 import kotlinx.android.synthetic.main.fragment_request_detail_text_data.*
 import kotlinx.android.synthetic.main.fragment_requests.*
 import kotlinx.android.synthetic.main.fragment_requests_list.*
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.async
 import org.jetbrains.anko.support.v4.toast
+import java.util.*
 import kotlin.properties.Delegates
 
 class RequestsFragment : BaseFragment(), View.OnClickListener {
 
 	private val mViewModel by lazy { RequestViewModel() }
 	private lateinit var mRequestAdapter: RequestsAdapter
+
 	// for tablet only
 	private var mDisplayedRequest by Delegates.observable(Request()) { _, _, newValue ->
 		if (newValue.id.isEmpty() ) {
-
+			// todo: first time load, add new request
 		} else {
+			mBtnSubmitNewRequest.setVisible(true)
+			mBtnCancelNewRequest.setVisible(true)
 			bind(newValue)
 		}
+	}
+	private var mIsAddingNew by Delegates.observable(false) { _, _, newValue ->
+		// hide if is adding new
+		include_requests_list.setVisible(!newValue)
+		mDisplayDataLayout.setVisible(!newValue)
+		mFabAddRequest.setVisible(!newValue)
+		mEtStatus.setVisible(!newValue)
+		// show
+		mBtnSubmitNewRequest.setVisible(newValue)
+		mBtnCancelNewRequest.setVisible(newValue)
 	}
 
 	private val onUpdate by lazy {
@@ -94,10 +110,10 @@ class RequestsFragment : BaseFragment(), View.OnClickListener {
 		} else {
 			// setup for tablet
 			mRcvApplications.layoutManager = LinearLayoutManager(context)
+			mBtnSubmitNewRequest.setOnClickListener(this)
+			mBtnCancelNewRequest.setOnClickListener(this)
+			mEtDeadline.setOnClickListener(this)
 		}
-
-
-
 	}
 
 	// todo: enable
@@ -123,24 +139,25 @@ class RequestsFragment : BaseFragment(), View.OnClickListener {
 	override fun onClick(v: View) {
 		when (v.id) {
 			R.id.mFabAddRequest -> {
-				// todo: enable
-//				addNew()
+				mDisplayedRequest = Request()
+				mIsAddingNew = true
+				bindTextData(mDisplayedRequest)
+			}
+			R.id.mBtnSubmitNewRequest -> {
+				addOrUpdateRequest()
+			}
+			R.id.mBtnCancelNewRequest -> {
+				mIsAddingNew = false
+			}
+			R.id.mEtDeadline -> {
+				// todo: display date picker
+				toast("Date Picked")
 			}
 		}
 	}
 
 	private fun bind(request: Request) {
-		mEtTitle.setText(request.title)
-		mEtDeadline.setText(request.deadline.toString())
-		mEtStatus.setText(getStatus(request.status))
-		mEtAssignedTo.setText(request.assignedTo)
-		mEtAddress.setText(request.address)
-		mEtCity.setText(request.city)
-		mEtCountry.setText(request.country)
-		mEtWeight.setText("${request.weight}")
-		mEtVolume.setText("${request.volume}")
-		mEtCompensation.setText("${request.compensation}")
-		mEtDescription.setText(request.description)
+		bindTextData(request)
 
 		// applications
 		tryBlock {
@@ -157,6 +174,20 @@ class RequestsFragment : BaseFragment(), View.OnClickListener {
 
 	}
 
+	private fun bindTextData(request: Request) {
+		mEtTitle.setText(request.title)
+		mEtDeadline.setText(request.deadline.toString())
+		mEtStatus.setText(getStatus(request.status))
+		mEtAssignedTo.setText(request.assignedTo)
+		mEtAddress.setText(request.address)
+		mEtCity.setText(request.city)
+		mEtCountry.setText(request.country)
+		mEtWeight.setText("${request.weight}")
+		mEtVolume.setText("${request.volume}")
+		mEtCompensation.setText("${request.compensation}")
+		mEtDescription.setText(request.description)
+	}
+
 	private fun getStatus(status: Int): String {
 		return when (status) {
 			0 -> "PENDING"
@@ -165,10 +196,32 @@ class RequestsFragment : BaseFragment(), View.OnClickListener {
 		}
 	}
 
-	// todo: enable
-//	private fun addNew() {
-//		val intent = Intent(context, AddRequestActivity::class.java)
-//		intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
-//		startActivity(intent)
-//	}
+	//
+	private fun addOrUpdateRequest() {
+
+		val title = mEtTitle.getString() ?: return
+		// todo: date picker
+		val deadline = Date()
+		val address = mEtAddress.getString() ?: return
+		val city = mEtCity.getString() ?: return
+		val country = mEtCountry.getString() ?: return
+		val weight = mEtWeight.getDouble() ?: return
+		val volume = mEtVolume.getDouble() ?: return
+		val compensation = mEtCompensation.getDouble() ?: return
+		val description = mEtDescription.getString() ?: return
+
+		val id = if (mDisplayedRequest.id.isEmpty()) UUID.randomUUID().toString() else mDisplayedRequest.id
+		val assignTo = if (mDisplayedRequest.id.isEmpty()) "" else mDisplayedRequest.assignedTo
+		val createdAt = if (mDisplayedRequest.id.isEmpty()) Date() else mDisplayedRequest.createdAt
+		val status = if (mDisplayedRequest.id.isEmpty()) RequestStatus.PENDING else mDisplayedRequest.status
+		val newRequest = Request(id, title, status, assignTo, deadline, country, city, address, weight, volume, compensation, description, createdAt, UserPref.getId(), UserPref.getEmail())
+
+		tryBlock {
+			async(CommonPool) {
+				AppRepository.insertRequest(newRequest)
+			}.await()
+			toast("inserted")
+			mIsAddingNew = false
+		}
+	}
 }

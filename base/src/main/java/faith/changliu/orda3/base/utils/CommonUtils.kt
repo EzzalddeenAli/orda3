@@ -29,6 +29,12 @@ inline fun ifConnected(onConnected: () -> Unit) {
 	else toastExt(R.string.no_network)
 }
 
+// View
+
+fun View.setVisible(isVisible: Boolean) {
+	visibility = if (isVisible) View.VISIBLE else View.GONE
+}
+
 
 // ---------- Edit Ext ----------
 
@@ -122,7 +128,6 @@ fun BaseFragment.tryBlock(block: suspend () -> Unit) {
 		}
 	}
 }
-
 
 
 // Debug and Prompts

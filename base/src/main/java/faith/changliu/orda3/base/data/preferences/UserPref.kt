@@ -15,10 +15,16 @@ object UserPref {
 	
 	const val PKG_NAME = "faith.changliu.base"
 	const val USER_ID = "$PKG_NAME.id"
-	
+	const val USER_EMAIL = "$PKG_NAME.email"
+
 	fun getId() = mSp.getString(USER_ID, "")
 	fun setId(userId: String) {
 		mSp.edit { putString(USER_ID, userId) }
+	}
+
+	fun getEmail() = mSp.getString(USER_EMAIL, "")
+	fun setEmail(email: String) {
+		mSp.edit { putString(USER_EMAIL, email) }
 	}
 	
 }

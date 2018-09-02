@@ -18,4 +18,5 @@
     <string name="update">Update</string>
     <string name="delete">Delete</string>
     <string name="profile_image">Profile image</string>
+    <string name="cancel">Cancel</string>
 </resources>

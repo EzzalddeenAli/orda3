@@ -38,11 +38,11 @@ class ApplicationsAdapter(
 			itemView.mLayoutReveal.visibility = if (newValue) View.VISIBLE else View.GONE
 		}
 
-		fun bind(request: RequestApplication) {
+		fun bind(application: RequestApplication) {
 
 			launch(UI) {
 				val user = async(CommonPool) {
-					FireDB.readUserWithId(request.appliedBy)
+					FireDB.readUserWithId(application.appliedBy)
 				}.await()
 
 				val ratings = async(CommonPool) {
@@ -57,12 +57,13 @@ class ApplicationsAdapter(
 					mTvName.text = user.name
 					mTvRating.text = avgRating.toString()
 
-					mBtnUpdateRequest.setOnClickListener {
-						// todo
-						onAssign(request)
+					mBtnAssign.setOnClickListener {
+						// todo: update request, application, traveler, etc........all at the same time and update views, etc.
+						// todo: where should I put this giant function???
+						onAssign(application)
 						isOpen = false
 					}
-					mBtnDeleteRequest.setOnClickListener {
+					mBtnCancel.setOnClickListener {
 						// todo
 						isOpen = false
 					}
@@ -73,8 +74,6 @@ class ApplicationsAdapter(
 				}
 
 			}
-
-
 		}
 	}
 }
