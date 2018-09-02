@@ -53,28 +53,26 @@
 
     <LinearLayout
         android:id="@+id/mLayoutReveal"
-        android:visibility="gone"
         android:layout_width="wrap_content"
         android:orientation="horizontal"
+        android:visibility="gone"
         android:layout_gravity="center_vertical"
         android:layout_height="wrap_content">
         <ImageButton
             android:id="@+id/mBtnContactAgent"
-            android:src="@drawable/ic_edit"
-            android:contentDescription="@string/update"
-            android:backgroundTint="@color/colorPrimaryMedium"
+            android:src="@drawable/ic_email"
+            android:layout_gravity="center_vertical"
+            android:contentDescription="@string/email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-        <ImageButton
+        <Button
             android:id="@+id/mBtnApply"
-            android:src="@drawable/ic_delete"
-            android:contentDescription="@string/delete"
+            android:text="Apply"
+            android:textColor="@color/white_overlay"
             android:backgroundTint="@android:color/holo_red_light"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>
 
 </LinearLayout>
-
-

@@ -74,9 +74,6 @@ abstract class BaseLoginActivity : BaseActivity(), View.OnClickListener {
 			ifUserTypeRight(user.type) {
 				UserPref.mUser = user
 
-				// sync data
-				AppRepository.syncAll()
-
 				toMain()
 			}
 		}
@@ -85,12 +82,16 @@ abstract class BaseLoginActivity : BaseActivity(), View.OnClickListener {
 	protected abstract fun toMain()
 
 	private inline fun ifUserTypeRight(userType: Int, onUserTypeRight: () -> Unit) {
-		if (userType == mUserType) {
-			toast("Log in successful")
+		if (userType == UserType.AGENT) {
 			onUserTypeRight()
 		} else {
-			toast("User not registered")
-			FireAuth.logout()
+			if (userType == mUserType) {
+				toast("Log in successful")
+				onUserTypeRight()
+			} else {
+				toast("User not registered")
+				FireAuth.logout()
+			}
 		}
 	}
 }

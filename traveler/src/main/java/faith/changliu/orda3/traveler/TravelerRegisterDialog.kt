@@ -1,27 +1,27 @@
-package faith.changliu.orda3.base.widgets
+package faith.changliu.orda3.traveler
 
 import android.content.Context
 import android.view.View
 import faith.changliu.orda3.base.BaseDialog
-import faith.changliu.orda3.base.R
 import faith.changliu.orda3.base.data.firebase.FireAuth
 import faith.changliu.orda3.base.data.firebase.firestore.FireDB
 import faith.changliu.orda3.base.data.models.User
+import faith.changliu.orda3.base.data.models.UserStatus
 import faith.changliu.orda3.base.data.models.UserType
 import faith.changliu.orda3.base.utils.getEmail
 import faith.changliu.orda3.base.utils.getString
 import faith.changliu.orda3.base.utils.ifConnected
-import faith.changliu.orda3.base.utils.log
-import kotlinx.android.synthetic.main.register_dialog.*
+import kotlinx.android.synthetic.main.register_traveler_dialog.*
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.launch
 import org.jetbrains.anko.toast
+import java.util.*
 
-class RegisterAgentDialog(ctx: Context) : BaseDialog(ctx), View.OnClickListener {
+class TravelerRegisterDialog(ctx: Context, private val toMain: () -> Unit) : BaseDialog(ctx), View.OnClickListener {
 
-	override val layoutResId: Int = R.layout.register_dialog
+	override val layoutResId: Int = R.layout.register_traveler_dialog
 
 	override fun setupOnConfirm() {
 		mBtnSubmit.setOnClickListener(this)
@@ -31,6 +31,12 @@ class RegisterAgentDialog(ctx: Context) : BaseDialog(ctx), View.OnClickListener 
 		if (v.id == mBtnSubmit.id) {
 			val email = mEtEmail.getEmail() ?: return
 			val name = mEtName.getString() ?: return
+			val pwd = mEtPwd.getString() ?: return
+			val pwdConfirm = mEtPwdConfirm.getString() ?: return
+			if (pwd != pwdConfirm) {
+				mEtPwd.error = "Password not match"
+				return
+			}
 
 			ifConnected {
 				launch(UI) {
@@ -41,15 +47,20 @@ class RegisterAgentDialog(ctx: Context) : BaseDialog(ctx), View.OnClickListener 
 						}.await()
 
 						if (isRegistered) {
-							checkUserType(email)
-						}
-						else {
-							// todo: get real user
-							val newUser = User(email, name)
-							async(CommonPool) {
-								FireDB.saveAgentRegisterRequest(newUser)
+							dismissWithToast("$email is registered. Please login")
+						} else {
+
+							val id = async(CommonPool) {
+								FireAuth.register(email, pwd)
 							}.await()
-							dismissWithToast("Register Request submitted.")
+
+							val newUser = User(id, email, "", name, 0, UserType.TRAVELER, 0, Date(), UserStatus.ACTIVE)
+
+							async(CommonPool) {
+								FireDB.saveUser(newUser)
+							}.await()
+							dismissWithToast("Registered")
+							toMain()
 						}
 
 					} catch (ex: Exception) {
@@ -63,20 +74,6 @@ class RegisterAgentDialog(ctx: Context) : BaseDialog(ctx), View.OnClickListener 
 		}
 	}
 
-	private suspend inline fun checkUserType(email: String) {
-		// todo: get user type
-		val userType = async(CommonPool) {
-			FireDB.getUserTypeWithEmail(email)
-		}.await()
-
-		// check user type
-		if (userType == UserType.TRAVELER) {
-			// todo: notify manager to handle it, change UserType from traveler to both after signing contract, etc.
-			dismissWithToast("From Traveler to Agent function to be added")
-		} else {
-			dismissWithToast("User already registered")
-		}
-	}
 
 	private fun dismissWithToast(msg: String) {
 		context.toast(msg)

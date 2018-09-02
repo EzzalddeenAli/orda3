@@ -1,22 +1,21 @@
-package faith.changliu.orda3.base.adapters
+package faith.changliu.orda3.traveler
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import faith.changliu.orda3.base.R
 import faith.changliu.orda3.base.data.models.Request
-import kotlinx.android.synthetic.main.cell_request.view.*
+import kotlinx.android.synthetic.main.cell_request_traveler.view.*
 import kotlin.properties.Delegates
 
-class RequestsAdapter(
+class TravelerRequestsAdapter(
 		var requests: ArrayList<Request>,
-		private val onUpdate: (Request) -> Unit,
-		private val onDelete: (Request) -> Unit
-) : RecyclerView.Adapter<RequestsAdapter.ViewHolder>() {
+		private val onContactAgent: (Request) -> Unit,
+		private val onApply: (Request) -> Unit
+) : RecyclerView.Adapter<TravelerRequestsAdapter.ViewHolder>() {
 
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-		val view = LayoutInflater.from(parent.context).inflate(R.layout.cell_request, parent, false)
+		val view = LayoutInflater.from(parent.context).inflate(R.layout.cell_request_traveler, parent, false)
 		return ViewHolder(view)
 	}
 
@@ -39,11 +38,11 @@ class RequestsAdapter(
 				mTvTitle.text = request.title
 				mTvMemo.text = request.description
 				mBtnContactAgent.setOnClickListener {
-					onUpdate(request)
+					onContactAgent(request)
 					isOpen = false
 				}
 				mBtnApply.setOnClickListener {
-					onDelete(request)
+					onApply(request)
 					isOpen = false
 				}
 
