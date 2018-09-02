@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import faith.changliu.orda3.base.BaseFragment
 import faith.changliu.orda3.base.R
+import faith.changliu.orda3.base.activities.AddRequestActivity
 import faith.changliu.orda3.base.adapters.ApplicationsAdapter
 import faith.changliu.orda3.base.adapters.RequestsAdapter
 import faith.changliu.orda3.base.data.AppRepository
@@ -24,6 +25,8 @@ import kotlinx.android.synthetic.main.fragment_requests.*
 import kotlinx.android.synthetic.main.fragment_requests_list.*
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.async
+import org.jetbrains.anko.support.v4.intentFor
+import org.jetbrains.anko.support.v4.startActivity
 import org.jetbrains.anko.support.v4.toast
 import java.util.*
 import kotlin.properties.Delegates
@@ -58,9 +61,8 @@ class RequestsFragment : BaseFragment(), View.OnClickListener {
 	private val onUpdate by lazy {
 		if (include_request_detail == null)
 			{ request: Request ->
-				// todo: phone
-				toast("Phone: " + request.toString())
-				Unit
+				val intent = intentFor<AddRequestActivity>(KEY_REQUEST to request)
+				startActivity(intent)
 			}
 		else
 			{ request: Request ->
@@ -70,23 +72,16 @@ class RequestsFragment : BaseFragment(), View.OnClickListener {
 	}
 
 	private val onDelete by lazy {
-		if (include_request_detail == null)
-			{ request: Request ->
-				// todo: phone
-				toast("Phone: " + request.toString())
-				Unit
-			}
-		else
-			{ request: Request ->
-				mFabAddRequest.snackConfirm("Confirm Delete Request") { _ ->
-					tryBlock {
-						async(CommonPool) {
-							AppRepository.deleteRequest(request.id)
-						}.await()
-						toast("Deleted")
-					}
+		{ request: Request ->
+			mFabAddRequest.snackConfirm("Confirm Delete Request") { _ ->
+				tryBlock {
+					async(CommonPool) {
+						AppRepository.deleteRequest(request.id)
+					}.await()
+					toast("Deleted")
 				}
 			}
+		}
 	}
 
 	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -140,9 +135,13 @@ class RequestsFragment : BaseFragment(), View.OnClickListener {
 	override fun onClick(v: View) {
 		when (v.id) {
 			R.id.mFabAddRequest -> {
-				mDisplayedRequest = Request()
-				mIsAddingNew = true
-				bindTextData(mDisplayedRequest)
+				if (include_request_detail == null) {
+					startActivity<AddRequestActivity>()
+				} else {
+					mDisplayedRequest = Request()
+					mIsAddingNew = true
+					bindTextData(mDisplayedRequest)
+				}
 			}
 			R.id.mBtnSubmitNewRequest -> {
 				addOrUpdateRequest()

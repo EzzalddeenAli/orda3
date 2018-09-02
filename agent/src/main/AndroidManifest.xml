@@ -26,5 +26,8 @@
         <activity android:name=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 
+        <activity android:name="faith.changliu.orda3.base.activities.AddRequestActivity"
+            android:launchMode="singleTop" />
+
     </application>
 </manifest>
