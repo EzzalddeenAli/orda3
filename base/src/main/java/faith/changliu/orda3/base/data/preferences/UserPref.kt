@@ -11,6 +11,7 @@ object UserPref {
 	private val mSp: SharedPreferences by lazy { AppContext.getSharedPreferences("user_pref", Context.MODE_PRIVATE) }
 	var mUser: User by Delegates.observable(User()) { property, oldValue, newValue ->
 		setId(newValue.id)
+		setEmail(newValue.email)
 	}
 	
 	const val PKG_NAME = "faith.changliu.base"

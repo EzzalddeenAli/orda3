@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import faith.changliu.orda3.base.BaseActivity
 import faith.changliu.orda3.base.data.models.Request
+import faith.changliu.orda3.base.data.preferences.UserPref
 import faith.changliu.orda3.base.data.viewmodels.RequestViewModel
 import faith.changliu.orda3.base.utils.snackConfirm
 
@@ -41,6 +42,9 @@ class TravelerMainActivity : BaseActivity() {
 
 		mRcvRequests.layoutManager = LinearLayoutManager(this)
 		mRequestAdapter = TravelerRequestsAdapter(arrayListOf(), onContactAgent, onApply)
+
+		// todo: debug, to be removed
+		toast(UserPref.mUser.toString())
 	}
 
 	override fun onResume() {
