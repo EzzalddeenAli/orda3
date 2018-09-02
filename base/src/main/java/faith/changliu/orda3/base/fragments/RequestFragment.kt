@@ -166,8 +166,19 @@ class RequestsFragment : BaseFragment(), View.OnClickListener {
 				FireDB.readAllApplicationsWithRequestId(request.id)
 			}.await()
 
-			val mApplicationsAdapter = ApplicationsAdapter(applications) {
-				toast(it.appliedBy)
+			val mApplicationsAdapter = ApplicationsAdapter(applications) { application ->
+				// assign application to id
+				request.assignedTo = application.appliedBy
+
+				tryBlock {
+					async(CommonPool) {
+						AppRepository.insertRequest(request)
+					}.await()
+
+					mDisplayedRequest.assignedTo = application.appliedBy
+					mEtAssignedTo.setText(application.appliedBy)
+					toast("Assigned")
+				}
 			}
 
 			mRcvApplications.adapter = mApplicationsAdapter

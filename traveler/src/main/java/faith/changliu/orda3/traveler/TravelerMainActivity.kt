@@ -3,6 +3,9 @@ package faith.changliu.orda3.traveler
 import android.arch.lifecycle.Observer
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import faith.changliu.orda3.base.BaseActivity
 import faith.changliu.orda3.base.data.firebase.firestore.FireDB
 import faith.changliu.orda3.base.data.models.Request
@@ -83,6 +86,21 @@ class TravelerMainActivity : BaseActivity() {
 				mRcvRequests.adapter = mRequestAdapter
 			}
 		})
+	}
+
+	override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+		menuInflater.inflate(R.menu.menu_account, menu)
+		return true
+	}
+
+	override fun onOptionsItemSelected(item: MenuItem): Boolean {
+		if (item.itemId == R.id.mni_account) {
+
+
+
+			return true
+		}
+		return false
 	}
 
 }
