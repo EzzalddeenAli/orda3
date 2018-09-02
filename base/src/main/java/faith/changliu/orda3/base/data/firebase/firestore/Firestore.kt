@@ -1,10 +1,7 @@
 package faith.changliu.orda3.base.data.firebase.firestore
 
 import com.google.firebase.firestore.FirebaseFirestore
-import faith.changliu.orda3.base.data.models.Order
-import faith.changliu.orda3.base.data.models.Request
-import faith.changliu.orda3.base.data.models.RequestApplication
-import faith.changliu.orda3.base.data.models.User
+import faith.changliu.orda3.base.data.models.*
 
 object FireDB {
 	private val mFirestore: FirebaseFirestore by lazy { FirebaseFirestore.getInstance() }
@@ -77,6 +74,18 @@ object FireDB {
 
 	suspend fun saveAgentRegisterRequest(user: User) {
 		mFirestore.saveAgentRegisterRequest(user)
+	}
+
+	// endregion
+
+	// region { Ratings }
+
+	suspend fun saveRating(rating: Rating) {
+		mFirestore.saveRating(rating)
+	}
+
+	suspend fun readAllRatingsForTravelerId(travelerId: String): ArrayList<Rating> {
+		return mFirestore.readAllRatingsForTravelerId(travelerId)
 	}
 
 	// endregion

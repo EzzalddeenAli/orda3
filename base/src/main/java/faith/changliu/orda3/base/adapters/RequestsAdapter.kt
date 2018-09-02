@@ -1,4 +1,4 @@
-package faith.changliu.orda3.base.fragments
+package faith.changliu.orda3.base.adapters
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater

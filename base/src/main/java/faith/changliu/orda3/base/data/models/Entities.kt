@@ -61,8 +61,8 @@ class RequestApplication(val id: String,
 }
 
 class Rating(val id: String,
-			 var fromId: String,
-			 var toId: String,
+			 var agentId: String,
+			 var travelerId: String,
 			 var rate: Double,
 			 val createdAt: Date,
 			 var comment: String)

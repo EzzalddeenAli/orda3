@@ -8,7 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import faith.changliu.orda3.base.BaseFragment
 import faith.changliu.orda3.base.R
+import faith.changliu.orda3.base.adapters.ApplicationsAdapter
+import faith.changliu.orda3.base.adapters.RequestsAdapter
 import faith.changliu.orda3.base.data.AppRepository
+import faith.changliu.orda3.base.data.firebase.firestore.FireDB
 import faith.changliu.orda3.base.data.models.Request
 import faith.changliu.orda3.base.data.viewmodels.RequestViewModel
 import faith.changliu.orda3.base.utils.snackConfirm
@@ -140,6 +143,17 @@ class RequestsFragment : BaseFragment(), View.OnClickListener {
 		mEtDescription.setText(request.description)
 
 		// applications
+		tryBlock {
+			val applications = async(CommonPool) {
+				FireDB.readAllApplicationsWithRequestId(request.id)
+			}.await()
+
+			val mApplicationsAdapter = ApplicationsAdapter(applications) {
+				toast(it.appliedBy)
+			}
+
+			mRcvApplications.adapter = mApplicationsAdapter
+		}
 
 	}
 
