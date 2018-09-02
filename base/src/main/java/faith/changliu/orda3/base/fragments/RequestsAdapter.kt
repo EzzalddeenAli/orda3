@@ -40,9 +40,11 @@ class RequestsAdapter(
 				mTvMemo.text = request.description
 				mBtnUpdateRequest.setOnClickListener {
 					onUpdate(request)
+					isOpen = false
 				}
 				mBtnDeleteRequest.setOnClickListener {
 					onDelete(request)
+					isOpen = false
 				}
 
 				mCellView.setOnClickListener {
