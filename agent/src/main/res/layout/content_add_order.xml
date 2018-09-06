@@ -9,6 +9,7 @@
     tools:showIn="@layout/activity_add_order">
 
     <android.support.constraint.ConstraintLayout
+        android:background="@color/colorPrimary"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -16,6 +17,7 @@
             android:id="@+id/mEtBarcode"
             style="@style/Et"
             android:hint="Barcode"
+            android:focusable="false"
             android:inputType="number"
             app:layout_constraintBottom_toBottomOf="@+id/mBtnScan"
             app:layout_constraintEnd_toStartOf="@+id/mBtnScan"
@@ -71,13 +73,9 @@
 
         <Button
             android:id="@+id/mBtnSubmitNewOrder"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:background="@color/colorPrimary"
+            style="@style/Btn"
             android:text="Submit"
-            android:textColor="@android:color/white"
-            android:textSize="18sp"
+            android:layout_marginTop="@dimen/space_small"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/mEtDescription" />

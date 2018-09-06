@@ -40,7 +40,6 @@
     <EditText
         android:id="@+id/mEtPwd"
         style="@style/Et.WithIcon"
-        android:layout_marginTop="8dp"
         android:drawableStart="@drawable/ic_pwd"
         android:hint="@string/password"
         android:inputType="textPassword"

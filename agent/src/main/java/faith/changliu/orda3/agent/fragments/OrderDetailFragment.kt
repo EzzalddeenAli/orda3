@@ -17,7 +17,6 @@ import kotlinx.android.synthetic.main.content_add_order.*
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.async
 import org.jetbrains.anko.support.v4.toast
-import java.util.*
 import kotlin.properties.Delegates
 
 class OrderDetailFragment : BaseFragment() {
@@ -55,7 +54,7 @@ class OrderDetailFragment : BaseFragment() {
 		}
 		
 		mBtnSubmitNewOrder.setOnClickListener {
-			updateRequest()
+			updateOrder()
 		}
 	}
 	
@@ -74,7 +73,7 @@ class OrderDetailFragment : BaseFragment() {
 	/**
 	 * update request
 	 */
-	private fun updateRequest() {
+	private fun updateOrder() {
 		
 		val title = mEtTitle.getString() ?: return
 		// todo: date picker for deadline, set to mRequest
@@ -83,7 +82,7 @@ class OrderDetailFragment : BaseFragment() {
 		val price = mEtPrice.getDouble() ?: return
 		val description = mEtDescription.getString() ?: return
 		
-		val newOrder = Order(id, title, weight, price, Date(), Date(), UserPref.getId(), description)
+		val newOrder = Order(id, title, weight, price, mOrder.createdAt, mOrder.pickedAt, UserPref.getId(), description)
 		
 		tryBlock {
 			async(CommonPool) {

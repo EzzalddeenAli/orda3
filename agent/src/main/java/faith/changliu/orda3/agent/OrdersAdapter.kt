@@ -36,7 +36,7 @@ class OrdersAdapter(
 		
 		fun bind(order: Order) {
 			itemView.apply {
-				mTvTitle.text = order.id
+				mTvTitle.text = order.title
 				mTvMemo.text = order.description
 				mBtnDelete.setOnClickListener {
 					snackConfirm("Confirm to delete") {

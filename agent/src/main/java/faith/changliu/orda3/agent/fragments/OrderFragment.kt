@@ -22,7 +22,16 @@ class OrderFragment : BaseFragment() {
 		super.onViewCreated(view, savedInstanceState)
 		
 		mFabAddOrder.setOnClickListener {
-			toast("Add Order")
+			val frag = OrderAddFragment.newInstance(mOrderDetailListener)
+			with(activity?.supportFragmentManager?.beginTransaction()) {
+				if (order_detail_container == null) {
+					this?.add(R.id.orders_list_container, frag, FRAG_TAG_ORDER_DETAIL)
+							?.commit()
+				} else {
+					this?.replace(R.id.order_detail_container, frag, FRAG_TAG_ORDER_DETAIL)
+							?.commit()
+				}
+			}
 		}
 		
 		activity?.supportFragmentManager?.beginTransaction()
