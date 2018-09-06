@@ -14,6 +14,7 @@ import faith.changliu.orda3.base.data.models.Request
 import faith.changliu.orda3.base.utils.KEY_REQUEST
 import faith.changliu.orda3.base.utils.tryBlock
 import kotlinx.android.synthetic.main.fragment_applications_list.*
+import kotlinx.android.synthetic.main.fragment_request_detail.*
 import kotlinx.android.synthetic.main.fragment_request_detail_text_data.*
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.async
@@ -26,12 +27,16 @@ class RequestEditFragment : BaseFragment() {
 		bind(newValue)
 	}
 	
+	private lateinit var mListener: RequestEditListener
+	
 	companion object {
 		/**
 		 * Factory
 		 */
-		fun newInstance(request: Request): RequestEditFragment {
+		fun newInstance(request: Request, listener: RequestEditListener): RequestEditFragment {
 			val instance = RequestEditFragment()
+			instance.mListener = listener
+			
 			val bundle = Bundle()
 			bundle.putSerializable(KEY_REQUEST, request)
 			instance.arguments = bundle
@@ -48,6 +53,10 @@ class RequestEditFragment : BaseFragment() {
 		super.onViewCreated(view, savedInstanceState)
 		(arguments?.getSerializable(KEY_REQUEST) as? Request)?.let {
 			mRequest = it
+		}
+		
+		mBtnSubmitNewRequest.setOnClickListener {
+			mListener.onFinished()
 		}
 	}
 	
@@ -108,4 +117,8 @@ class RequestEditFragment : BaseFragment() {
 	
 	
 	
+}
+
+interface RequestEditListener {
+	fun onFinished()
 }

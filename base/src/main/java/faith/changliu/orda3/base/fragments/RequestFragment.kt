@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import faith.changliu.orda3.base.BaseFragment
 import faith.changliu.orda3.base.R
 import faith.changliu.orda3.base.data.models.Request
+import faith.changliu.orda3.base.utils.FRAG_TAG_REQUEST_DETAIL
 import kotlinx.android.synthetic.main.fragment_requests.*
 import org.jetbrains.anko.support.v4.toast
 
@@ -28,9 +29,9 @@ class RequestFragment : BaseFragment() {
 	}
 	
 	// region { Implement List Listener }
-	
 	private val mRequestListListener by lazy {
 		if (request_detail_container == null) {
+			// todo: phone
 			object : RequestListListener {
 				override fun onRead(request: Request) {
 					toast(request.title)
@@ -52,7 +53,7 @@ class RequestFragment : BaseFragment() {
 				
 				override fun onUpdate(request: Request) {
 					activity?.supportFragmentManager?.beginTransaction()
-							?.replace(R.id.request_detail_container, RequestEditFragment.newInstance(request))
+							?.replace(R.id.request_detail_container, RequestEditFragment.newInstance(request, mEditListener), FRAG_TAG_REQUEST_DETAIL)
 							?.commit()
 				}
 				
@@ -62,7 +63,30 @@ class RequestFragment : BaseFragment() {
 			}
 		}
 	}
+	// endregion
 	
+	// region { Implement Detail Listener }
+	
+	private val mEditListener by lazy {
+		if (request_detail_container == null) {
+			// todo: phone
+			object : RequestEditListener {
+				override fun onFinished() {
+					with(activity?.supportFragmentManager) {
+						this?.beginTransaction()?.remove(findFragmentByTag(FRAG_TAG_REQUEST_DETAIL))?.commit()
+					}
+				}
+			}
+		} else {
+			object : RequestEditListener {
+				override fun onFinished() {
+					with(activity?.supportFragmentManager) {
+						this?.beginTransaction()?.remove(findFragmentByTag(FRAG_TAG_REQUEST_DETAIL))?.commit()
+					}
+				}
+			}
+		}
+	}
 	
 	// endregion
 	
