@@ -15,7 +15,7 @@
             android:layout_height="wrap_content" />
 
         <LinearLayout
-            android:id="@+id/mDisplayDataLayout"
+            android:id="@+id/mDisplayApplicationLayout"
             android:orientation="vertical"
             android:layout_marginBottom="@dimen/space_medium"
             android:layout_width="match_parent"

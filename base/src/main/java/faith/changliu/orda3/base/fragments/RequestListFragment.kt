@@ -10,9 +10,15 @@ import android.view.ViewGroup
 import faith.changliu.orda3.base.BaseFragment
 import faith.changliu.orda3.base.R
 import faith.changliu.orda3.base.adapters.RequestsAdapter
+import faith.changliu.orda3.base.data.AppRepository
 import faith.changliu.orda3.base.data.models.Request
 import faith.changliu.orda3.base.data.viewmodels.RequestViewModel
+import faith.changliu.orda3.base.utils.snackConfirm
+import faith.changliu.orda3.base.utils.tryBlock
 import kotlinx.android.synthetic.main.fragment_requests_list.*
+import kotlinx.coroutines.experimental.CommonPool
+import kotlinx.coroutines.experimental.async
+import org.jetbrains.anko.support.v4.toast
 
 class RequestListFragment : BaseFragment() {
 	
@@ -56,7 +62,16 @@ class RequestListFragment : BaseFragment() {
 		mRcvRequests.layoutManager = LinearLayoutManager(context)
 		
 		// todo: implement onUpdate, onDelete
-		mRequestAdapter = RequestsAdapter(arrayListOf(), {mRequestListListener.onRead(it)}, {mRequestListListener.onUpdate(it)}, {mRequestListListener.onDelete(it)})
+		mRequestAdapter = RequestsAdapter(arrayListOf(), { toast(it.title) }, {mRequestListListener.onUpdate(it)}, {
+			mRcvRequests.snackConfirm("Confirm Delete Request") { _ ->
+				tryBlock {
+					async(CommonPool) {
+						AppRepository.deleteRequest(it.id)
+					}.await()
+					toast("Deleted")
+				}
+			}
+		})
 	}
 	
 	override fun onResume() {
@@ -76,6 +91,4 @@ class RequestListFragment : BaseFragment() {
 
 interface RequestListListener {
 	fun onUpdate(request: Request)
-	fun onDelete(request: Request)
-	fun onRead(request: Request)
 }

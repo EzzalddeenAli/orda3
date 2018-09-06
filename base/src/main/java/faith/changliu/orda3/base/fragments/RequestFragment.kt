@@ -20,7 +20,17 @@ class RequestFragment : BaseFragment() {
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 		
-		mFabAddRequest.setOnClickListener { toast("Add Request") }
+		mFabAddRequest.setOnClickListener {
+			if (request_detail_container == null) {
+				activity?.supportFragmentManager?.beginTransaction()
+						?.addToBackStack(null)?.add(R.id.requests_list_container, RequestAddFragment.newInstance(mEditListener), FRAG_TAG_REQUEST_DETAIL)
+						?.commit()
+			} else {
+				activity?.supportFragmentManager?.beginTransaction()
+						?.replace(R.id.request_detail_container, RequestAddFragment.newInstance(mEditListener), FRAG_TAG_REQUEST_DETAIL)
+						?.commit()
+			}
+		}
 		
 		activity?.supportFragmentManager?.beginTransaction()
 				?.replace(R.id.requests_list_container, RequestListFragment.newInstance(mRequestListListener))
@@ -33,32 +43,16 @@ class RequestFragment : BaseFragment() {
 		if (request_detail_container == null) {
 			// todo: phone
 			object : RequestListListener {
-				override fun onRead(request: Request) {
-					toast(request.title)
-				}
-				
 				override fun onUpdate(request: Request) {
 					toast(request.description)
-				}
-				
-				override fun onDelete(request: Request) {
-					toast(request.id)
 				}
 			}
 		} else {
 			object : RequestListListener {
-				override fun onRead(request: Request) {
-					toast(request.title)
-				}
-				
 				override fun onUpdate(request: Request) {
 					activity?.supportFragmentManager?.beginTransaction()
 							?.replace(R.id.request_detail_container, RequestEditFragment.newInstance(request, mEditListener), FRAG_TAG_REQUEST_DETAIL)
 							?.commit()
-				}
-				
-				override fun onDelete(request: Request) {
-					toast(request.id)
 				}
 			}
 		}
@@ -68,21 +62,10 @@ class RequestFragment : BaseFragment() {
 	// region { Implement Detail Listener }
 	
 	private val mEditListener by lazy {
-		if (request_detail_container == null) {
-			// todo: phone
-			object : RequestEditListener {
-				override fun onFinished() {
-					with(activity?.supportFragmentManager) {
-						this?.beginTransaction()?.remove(findFragmentByTag(FRAG_TAG_REQUEST_DETAIL))?.commit()
-					}
-				}
-			}
-		} else {
-			object : RequestEditListener {
-				override fun onFinished() {
-					with(activity?.supportFragmentManager) {
-						this?.beginTransaction()?.remove(findFragmentByTag(FRAG_TAG_REQUEST_DETAIL))?.commit()
-					}
+		object : RequestEditListener {
+			override fun onFinished() {
+				with(activity?.supportFragmentManager) {
+					this?.beginTransaction()?.remove(findFragmentByTag(FRAG_TAG_REQUEST_DETAIL))?.commit()
 				}
 			}
 		}
