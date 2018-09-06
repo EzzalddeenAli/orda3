@@ -1,6 +1,7 @@
 package faith.changliu.orda3.agent.fragments
 
 import android.os.Bundle
+import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,10 +10,7 @@ import faith.changliu.orda3.base.BaseFragment
 import faith.changliu.orda3.base.data.AppRepository
 import faith.changliu.orda3.base.data.models.Order
 import faith.changliu.orda3.base.data.preferences.UserPref
-import faith.changliu.orda3.base.utils.KEY_ORDER
-import faith.changliu.orda3.base.utils.getDouble
-import faith.changliu.orda3.base.utils.getString
-import faith.changliu.orda3.base.utils.tryBlock
+import faith.changliu.orda3.base.utils.*
 import kotlinx.android.synthetic.main.content_add_order.*
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.async
@@ -49,6 +47,12 @@ class OrderDetailFragment : BaseFragment() {
 	
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
+		
+		mBtnScan.setVisible(false)
+		mEtBarcode.inputType = InputType.TYPE_NULL
+		mEtBarcode.keyListener = null
+//		mEtBarcode.isClickable = false
+		
 		(arguments?.getSerializable(KEY_ORDER) as? Order)?.let {
 			mOrder = it
 		}
@@ -81,12 +85,11 @@ class OrderDetailFragment : BaseFragment() {
 		
 		val title = mEtTitle.getString() ?: return
 		// todo: date picker for deadline, set to mRequest
-		val id = mEtBarcode.getString() ?: return
 		val weight = mEtWeight.getDouble() ?: return
 		val price = mEtPrice.getDouble() ?: return
 		val description = mEtDescription.getString() ?: return
 		
-		val newOrder = Order(id, title, weight, price, mOrder.createdAt, mOrder.pickedAt, UserPref.getId(), description)
+		val newOrder = Order(mOrder.id, title, weight, price, mOrder.createdAt, mOrder.pickedAt, UserPref.getId(), description)
 		
 		tryBlock {
 			async(CommonPool) {
