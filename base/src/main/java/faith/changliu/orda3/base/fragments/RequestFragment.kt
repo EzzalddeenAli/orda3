@@ -9,7 +9,6 @@ import faith.changliu.orda3.base.R
 import faith.changliu.orda3.base.data.models.Request
 import faith.changliu.orda3.base.utils.FRAG_TAG_REQUEST_DETAIL
 import kotlinx.android.synthetic.main.fragment_requests.*
-import org.jetbrains.anko.support.v4.toast
 
 class RequestFragment : BaseFragment() {
 	
@@ -44,7 +43,9 @@ class RequestFragment : BaseFragment() {
 			// todo: phone
 			object : RequestListListener {
 				override fun onUpdate(request: Request) {
-					toast(request.description)
+					activity?.supportFragmentManager?.beginTransaction()
+							?.add(R.id.requests_list_container, RequestEditFragment.newInstance(request, mEditListener), FRAG_TAG_REQUEST_DETAIL)
+							?.commit()
 				}
 			}
 		} else {
