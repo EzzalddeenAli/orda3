@@ -80,6 +80,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/mEtDescription" />
 
+        <Button
+            android:id="@+id/mBtnCancel"
+            style="@style/Btn"
+            android:layout_marginTop="8dp"
+            android:text="@string/cancel"
+            android:textColor="@android:color/holo_red_light"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mBtnSubmitNewOrder" />
+
     </android.support.constraint.ConstraintLayout>
 
 </android.support.v4.widget.NestedScrollView>

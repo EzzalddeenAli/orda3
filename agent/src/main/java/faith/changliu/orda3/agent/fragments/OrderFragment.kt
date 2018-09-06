@@ -8,9 +8,7 @@ import faith.changliu.orda3.agent.R
 import faith.changliu.orda3.base.BaseFragment
 import faith.changliu.orda3.base.data.models.Order
 import faith.changliu.orda3.base.utils.FRAG_TAG_ORDER_DETAIL
-import faith.changliu.orda3.base.utils.FRAG_TAG_REQUEST_DETAIL
 import kotlinx.android.synthetic.main.fragment_orders.*
-import org.jetbrains.anko.support.v4.toast
 
 class OrderFragment : BaseFragment() {
 	
@@ -25,7 +23,8 @@ class OrderFragment : BaseFragment() {
 			val frag = OrderAddFragment.newInstance(mOrderDetailListener)
 			with(activity?.supportFragmentManager?.beginTransaction()) {
 				if (order_detail_container == null) {
-					this?.add(R.id.orders_list_container, frag, FRAG_TAG_ORDER_DETAIL)
+					this?.addToBackStack(null)
+							?.add(R.id.orders_list_container, frag, FRAG_TAG_ORDER_DETAIL)
 							?.commit()
 				} else {
 					this?.replace(R.id.order_detail_container, frag, FRAG_TAG_ORDER_DETAIL)
@@ -46,6 +45,7 @@ class OrderFragment : BaseFragment() {
 			object : OrdersListListener {
 				override fun onUpdate(order: Order) {
 					activity?.supportFragmentManager?.beginTransaction()
+							?.addToBackStack(null)
 							?.add(R.id.orders_list_container, OrderDetailFragment.newInstance(order, mOrderDetailListener), FRAG_TAG_ORDER_DETAIL)
 							?.commit()
 				}
@@ -71,7 +71,6 @@ class OrderFragment : BaseFragment() {
 				override fun onFinished() {
 					activity?.supportFragmentManager?.popBackStack()
 				}
-				
 			}
 		} else {
 			object : OrderDetailListener {
@@ -81,10 +80,8 @@ class OrderFragment : BaseFragment() {
 								?.commit()
 					}
 				}
-				
 			}
 		}
-		
 	}
 	
 	// endregion

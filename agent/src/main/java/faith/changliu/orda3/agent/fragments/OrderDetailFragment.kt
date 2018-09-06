@@ -56,6 +56,10 @@ class OrderDetailFragment : BaseFragment() {
 		mBtnSubmitNewOrder.setOnClickListener {
 			updateOrder()
 		}
+		
+		mBtnCancel.setOnClickListener {
+			mListener.onFinished()
+		}
 	}
 	
 	// region { bind request }

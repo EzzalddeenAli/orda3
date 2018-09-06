@@ -55,6 +55,10 @@ class OrderAddFragment : BaseFragment() {
 				toScan()
 			}
 		}
+		
+		mBtnCancel.setOnClickListener {
+			mListener.onFinished()
+		}
 	}
 	
 	private fun toScan() {
@@ -63,11 +67,14 @@ class OrderAddFragment : BaseFragment() {
 	
 	override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 		super.onActivityResult(requestCode, resultCode, data)
-		if (resultCode == Activity.RESULT_OK) {
-			if (requestCode == REQUEST_ACTIVITY_SCAN) {
-				val barcodeString = data?.getStringExtra(EXTRA_SCAN_RESULT)
-				mEtBarcode.setText(barcodeString)
-			}
+		if (resultCode != Activity.RESULT_OK) {
+			toast("Barcode scan cancelled")
+			return
+		}
+		
+		if (requestCode == REQUEST_ACTIVITY_SCAN) {
+			val barcodeString = data?.getStringExtra(EXTRA_SCAN_RESULT)
+			mEtBarcode.setText(barcodeString)
 		}
 	}
 	
@@ -105,5 +112,7 @@ class OrderAddFragment : BaseFragment() {
 			mListener.onFinished()
 		}
 	}
+	
+	
 	
 }
