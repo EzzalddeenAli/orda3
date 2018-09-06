@@ -11,7 +11,10 @@ import faith.changliu.orda3.base.adapters.ApplicationsAdapter
 import faith.changliu.orda3.base.data.AppRepository
 import faith.changliu.orda3.base.data.firebase.firestore.FireDB
 import faith.changliu.orda3.base.data.models.Request
+import faith.changliu.orda3.base.data.preferences.UserPref
 import faith.changliu.orda3.base.utils.KEY_REQUEST
+import faith.changliu.orda3.base.utils.getDouble
+import faith.changliu.orda3.base.utils.getString
 import faith.changliu.orda3.base.utils.tryBlock
 import kotlinx.android.synthetic.main.fragment_applications_list.*
 import kotlinx.android.synthetic.main.fragment_request_detail.*
@@ -19,6 +22,7 @@ import kotlinx.android.synthetic.main.fragment_request_detail_text_data.*
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.async
 import org.jetbrains.anko.support.v4.toast
+import java.util.*
 import kotlin.properties.Delegates
 
 class RequestEditFragment : BaseFragment() {
@@ -56,6 +60,11 @@ class RequestEditFragment : BaseFragment() {
 		}
 		
 		mBtnSubmitNewRequest.setOnClickListener {
+			updateRequest()
+		}
+		
+		mBtnCancelNewRequest.setOnClickListener {
+			toast("Update Cancelled")
 			mListener.onFinished()
 		}
 	}
@@ -73,18 +82,9 @@ class RequestEditFragment : BaseFragment() {
 			}.await()
 			
 			val mApplicationsAdapter = ApplicationsAdapter(applications) { application ->
-				// assign application to id
-				request.assignedTo = application.appliedBy
-				
-				tryBlock {
-					async(CommonPool) {
-						AppRepository.insertRequest(request)
-					}.await()
-					
-					mRequest.assignedTo = application.appliedBy
-					mEtAssignedTo.setText(application.appliedBy)
-					toast("Assigned")
-				}
+				mRequest.assignedTo = application.appliedBy
+				mEtAssignedTo.setText(application.appliedBy)
+				toast("Assigned. Please submit to confirm.")
 			}
 			
 			mRcvApplications.adapter = mApplicationsAdapter
@@ -115,7 +115,31 @@ class RequestEditFragment : BaseFragment() {
 	
 	// endregion
 	
-	
+	/**
+	 * update request
+	 */
+	private fun updateRequest() {
+
+		val title = mEtTitle.getString() ?: return
+		// todo: date picker for deadline, set to mRequest
+		val address = mEtAddress.getString() ?: return
+		val city = mEtCity.getString() ?: return
+		val country = mEtCountry.getString() ?: return
+		val weight = mEtWeight.getDouble() ?: return
+		val volume = mEtVolume.getDouble() ?: return
+		val compensation = mEtCompensation.getDouble() ?: return
+		val description = mEtDescription.getString() ?: return
+
+		val newRequest = Request(mRequest.id, title, mRequest.status, mRequest.assignedTo, mRequest.deadline, country, city, address, weight, volume, compensation, description, mRequest.createdAt, UserPref.getId(), UserPref.getEmail())
+
+		tryBlock {
+			async(CommonPool) {
+				AppRepository.insertRequest(newRequest)
+			}.await()
+			toast("Request Updated")
+			mListener.onFinished()
+		}
+	}
 	
 }
 
