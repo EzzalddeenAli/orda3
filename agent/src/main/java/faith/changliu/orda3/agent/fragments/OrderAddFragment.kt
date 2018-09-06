@@ -111,7 +111,4 @@ class OrderAddFragment : BaseFragment() {
 			mListener.onFinished()
 		}
 	}
-	
-	
-	
 }

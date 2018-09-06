@@ -11,11 +11,10 @@ import faith.changliu.orda3.base.adapters.ApplicationsAdapter
 import faith.changliu.orda3.base.data.AppRepository
 import faith.changliu.orda3.base.data.firebase.firestore.FireDB
 import faith.changliu.orda3.base.data.models.Request
+import faith.changliu.orda3.base.data.models.RequestStatus
 import faith.changliu.orda3.base.data.preferences.UserPref
-import faith.changliu.orda3.base.utils.KEY_REQUEST
-import faith.changliu.orda3.base.utils.getDouble
-import faith.changliu.orda3.base.utils.getString
-import faith.changliu.orda3.base.utils.tryBlock
+import faith.changliu.orda3.base.utils.*
+import faith.changliu.orda3.base.widgets.RatingDialog
 import kotlinx.android.synthetic.main.fragment_applications_list.*
 import kotlinx.android.synthetic.main.fragment_request_detail.*
 import kotlinx.android.synthetic.main.fragment_request_detail_text_data.*
@@ -59,6 +58,15 @@ class RequestEditFragment : BaseFragment() {
 			mRequest = it
 		}
 		
+		if (mRequest.status == RequestStatus.CLOSED) {
+			// region { todo: if request is closed }
+			
+			mBtnCloseRequest.setVisible(false)
+			mBtnSubmitNewRequest.setVisible(false)
+			
+			// endregion
+		}
+		
 		mBtnSubmitNewRequest.setOnClickListener {
 			updateRequest()
 		}
@@ -66,6 +74,10 @@ class RequestEditFragment : BaseFragment() {
 		mBtnCancelNewRequest.setOnClickListener {
 			toast("Update Cancelled")
 			mListener.onFinished()
+		}
+		
+		mBtnCloseRequest.setOnClickListener {
+			closeRequest()
 		}
 	}
 	
@@ -83,6 +95,7 @@ class RequestEditFragment : BaseFragment() {
 			
 			val mApplicationsAdapter = ApplicationsAdapter(applications) { application ->
 				mRequest.assignedTo = application.appliedBy
+				mRequest.status = RequestStatus.ASSIGNED
 				mEtAssignedTo.setText(application.appliedBy)
 				toast("Assigned. Please submit to confirm.")
 			}
@@ -138,6 +151,22 @@ class RequestEditFragment : BaseFragment() {
 			}.await()
 			toast("Request Updated")
 			mListener.onFinished()
+		}
+	}
+	
+	/**
+	 * Close request
+	 */
+	private fun closeRequest() {
+		if (mRequest.assignedTo.isEmpty()) {
+			mBtnCloseRequest.snackConfirm("Request not assigned yet. Sure to close?") {
+				mRequest.status = RequestStatus.CLOSED
+				updateRequest()
+			}
+		} else {
+			mBtnCloseRequest.snackConfirm("Confirm Closing Request") {
+				RatingDialog(context!!).show()
+			}
 		}
 	}
 	

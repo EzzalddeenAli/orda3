@@ -44,6 +44,13 @@
             android:layout_width="match_parent" />
 
         <Button
+            android:id="@+id/mBtnCloseRequest"
+            android:text="Close"
+            style="@style/Btn"
+            android:layout_marginTop="@dimen/space_small"
+            android:layout_width="match_parent" />
+
+        <Button
             android:id="@+id/mBtnCancelNewRequest"
             android:text="@string/cancel"
             style="@style/Btn"
