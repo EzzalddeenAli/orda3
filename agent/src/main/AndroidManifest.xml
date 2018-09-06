@@ -28,10 +28,6 @@
         <activity android:name=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <activity android:name=".AddOrderActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:launchMode="singleTop" />
-
         <activity android:name=".ScannerActivity"
             android:launchMode="singleTop" />
 

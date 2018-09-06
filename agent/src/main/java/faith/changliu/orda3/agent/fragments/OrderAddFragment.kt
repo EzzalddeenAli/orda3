@@ -20,7 +20,6 @@ import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.async
 import org.jetbrains.anko.support.v4.intentFor
 import org.jetbrains.anko.support.v4.toast
-import org.jetbrains.anko.toast
 import java.util.*
 
 class OrderAddFragment : BaseFragment() {
@@ -51,7 +50,7 @@ class OrderAddFragment : BaseFragment() {
 		}
 		
 		mBtnScan.setOnClickListener { _ ->
-			activity?.checkPermissionFor(REQUEST_PMS_CAM, Manifest.permission.CAMERA) {
+			checkPermissionFor(REQUEST_PMS_CAM, Manifest.permission.CAMERA) {
 				toScan()
 			}
 		}

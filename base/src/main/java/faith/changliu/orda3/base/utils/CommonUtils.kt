@@ -8,6 +8,7 @@ import android.net.ConnectivityManager
 import android.support.design.widget.Snackbar
 import android.support.design.widget.TextInputEditText
 import android.support.v4.app.ActivityCompat
+import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
@@ -38,6 +39,22 @@ fun Activity.checkPermissionFor(requestCode: Int, permission: String, onGrantedL
 		onGrantedListener()
 	} else {
 		ActivityCompat.requestPermissions(this, arrayOf(permission), requestCode)
+	}
+}
+
+/**
+ * Permission check for fragment
+ */
+fun Fragment.checkPermissionFor(requestCode: Int, permission: String, onGrantedListener: () -> Unit) {
+	if (context == null) {
+		toast("Error: Context found null")
+		return
+	}
+	
+	if (ContextCompat.checkSelfPermission(context!!, permission) == PackageManager.PERMISSION_GRANTED) {
+		onGrantedListener()
+	} else {
+		requestPermissions(arrayOf(permission), requestCode)
 	}
 }
 
