@@ -11,7 +11,7 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.view.MenuItem
 import faith.changliu.orda3.base.BaseActivity
 import faith.changliu.orda3.base.BaseFragment
-import faith.changliu.orda3.base.fragments.RequestsFragment
+import faith.changliu.orda3.base.fragments.RequestFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 
@@ -37,7 +37,7 @@ class MainActivity : BaseActivity(),
 		setContentView(R.layout.activity_main)
 		setSupportActionBar(toolbar)
 
-		frags = listOf(OrderFragment(), RequestsFragment(), AccountFragment())
+		frags = listOf(OrderFragment(), RequestFragment(), AccountFragment())
 
 		// init views
 		mPager.apply {
