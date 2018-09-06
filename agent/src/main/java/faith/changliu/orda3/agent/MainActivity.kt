@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentPagerAdapter
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.view.MenuItem
+import faith.changliu.orda3.agent.fragments.OrderFragment
 import faith.changliu.orda3.base.BaseActivity
 import faith.changliu.orda3.base.BaseFragment
 import faith.changliu.orda3.base.fragments.RequestFragment

@@ -32,26 +32,26 @@ class AddOrderActivity : BaseActivity() {
 			bind(order)
 		}
 
-		mBtnSubmit.setOnClickListener { view ->
-			
-			// validation
-			val barcode = mEtBarcode.getString() ?: return@setOnClickListener
-			val title = mEtTitle.getString() ?: return@setOnClickListener
-			val price = mEtPrice.getDouble() ?: return@setOnClickListener
-			val weight = mEtWeight.getDouble() ?: return@setOnClickListener
-			val description = mEtDescription.text.toString()
-			
-			val userId = UserPref.getId()
-			
-			// todo: remove ph agent test
-			val newOrder = Order(barcode, title, weight, price, Date(), Date(), userId, description)
-			tryBlock {
-				async(CommonPool) {
-					AppRepository.insertOrder(newOrder)
-				}.await()
-				finish()
-			}
-		}
+//		mBtnSubmit.setOnClickListener { view ->
+//
+//			// validation
+//			val barcode = mEtBarcode.getString() ?: return@setOnClickListener
+//			val title = mEtTitle.getString() ?: return@setOnClickListener
+//			val price = mEtPrice.getDouble() ?: return@setOnClickListener
+//			val weight = mEtWeight.getDouble() ?: return@setOnClickListener
+//			val description = mEtDescription.text.toString()
+//
+//			val userId = UserPref.getId()
+//
+//			// todo: remove ph agent test
+//			val newOrder = Order(barcode, title, weight, price, Date(), Date(), userId, description)
+//			tryBlock {
+//				async(CommonPool) {
+//					AppRepository.insertOrder(newOrder)
+//				}.await()
+//				finish()
+//			}
+//		}
 	}
 
 	private fun bind(order: Order) {
