@@ -55,6 +55,7 @@
         android:id="@+id/mLayoutReveal"
         android:layout_width="wrap_content"
         android:orientation="horizontal"
+        android:visibility="gone"
         android:layout_gravity="center_vertical"
         android:layout_height="wrap_content">
         <Button
