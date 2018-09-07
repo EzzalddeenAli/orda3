@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import faith.changliu.orda3.base.widgets.LoadingDialog
+import org.jetbrains.anko.toast
 
 abstract class BaseDialog(ctx: Context) : Dialog(ctx) {
 	val mLoading: LoadingDialog by lazy { LoadingDialog(this.context) }
@@ -17,4 +18,9 @@ abstract class BaseDialog(ctx: Context) : Dialog(ctx) {
 	}
 
 	protected open fun setupOnConfirm() {}
+	
+	protected fun dismissWithToast(msg: String) {
+		context.toast(msg)
+		dismiss()
+	}
 }

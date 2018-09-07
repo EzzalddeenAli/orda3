@@ -11,6 +11,7 @@ import kotlin.properties.Delegates
 
 class RequestsAdapter(
 		var requests: ArrayList<Request>,
+		private val onRead: (Request) -> Unit,
 		private val onUpdate: (Request) -> Unit,
 		private val onDelete: (Request) -> Unit
 ) : RecyclerView.Adapter<RequestsAdapter.ViewHolder>() {

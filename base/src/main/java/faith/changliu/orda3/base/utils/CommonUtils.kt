@@ -1,10 +1,14 @@
 package faith.changliu.orda3.base.utils
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.ConnectivityManager
 import android.support.design.widget.Snackbar
 import android.support.design.widget.TextInputEditText
+import android.support.v4.app.ActivityCompat
+import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
@@ -27,6 +31,31 @@ fun isConnected(): Boolean {
 inline fun ifConnected(onConnected: () -> Unit) {
 	if (isConnected()) onConnected()
 	else toastExt(R.string.no_network)
+}
+
+// Permission check
+fun Activity.checkPermissionFor(requestCode: Int, permission: String, onGrantedListener: () -> Unit) {
+	if (ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED) {
+		onGrantedListener()
+	} else {
+		ActivityCompat.requestPermissions(this, arrayOf(permission), requestCode)
+	}
+}
+
+/**
+ * Permission check for fragment
+ */
+fun Fragment.checkPermissionFor(requestCode: Int, permission: String, onGrantedListener: () -> Unit) {
+	if (context == null) {
+		toast("Error: Context found null")
+		return
+	}
+	
+	if (ContextCompat.checkSelfPermission(context!!, permission) == PackageManager.PERMISSION_GRANTED) {
+		onGrantedListener()
+	} else {
+		requestPermissions(arrayOf(permission), requestCode)
+	}
 }
 
 // View

@@ -60,7 +60,7 @@ class RequestApplication(val id: String,
 	constructor() : this("", "", "", Date())
 }
 
-class Rating(val id: String,
+data class Rating(val id: String,
 			 var agentId: String,
 			 var travelerId: String,
 			 var rate: Double,

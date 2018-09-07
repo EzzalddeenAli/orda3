@@ -114,6 +114,16 @@ object AppRepository {
 			roomDB.requestDao.deleteRequestById(requestId)
 		}
 	}
+	
+	/**
+	 * Used for testing data passed in-app
+	 */
+	fun getRequestByIdFromRoom(requestId: String, onRequestGet: (request: Request) -> Unit) {
+		executor.execute {
+			val request = roomDB.requestDao.getRequestById(requestId)
+			onRequestGet(request)
+		}
+	}
 
 	// endregion
 }

@@ -1,52 +1,54 @@
-package faith.changliu.orda3.agent
+package faith.changliu.orda3.agent.fragments
 
 import android.arch.lifecycle.Observer
-import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import faith.changliu.orda3.agent.OrdersAdapter
+import faith.changliu.orda3.agent.R
 import faith.changliu.orda3.base.BaseFragment
 import faith.changliu.orda3.base.data.AppRepository
 import faith.changliu.orda3.base.data.models.Order
 import faith.changliu.orda3.base.data.viewmodels.MainViewModel
-import faith.changliu.orda3.base.utils.KEY_ORDER
 import faith.changliu.orda3.base.utils.tryBlock
-import kotlinx.android.synthetic.main.fragment_orders.*
+import kotlinx.android.synthetic.main.fragment_orders_list.*
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.async
-import org.jetbrains.anko.support.v4.startActivity
 import org.jetbrains.anko.support.v4.toast
 
-class OrderFragment : BaseFragment(), View.OnClickListener {
+class OrdersListFragment : BaseFragment() {
 	
 	private val mViewModel by lazy { MainViewModel() }
 	private lateinit var mOrderAdapter: OrdersAdapter
-
-
-	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-		return inflater.inflate(R.layout.fragment_orders, container, false)
+	private lateinit var mOrdersListListener: OrdersListListener
+	
+	companion object {
+		fun newInstance(listener: OrdersListListener): OrdersListFragment {
+			val instance = OrdersListFragment()
+			instance.mOrdersListListener = listener
+			
+			return instance
+		}
 	}
-
+	
+	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+		return inflater.inflate(R.layout.fragment_orders_list, container, false)
+	}
+	
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
-		mFabAddOrder.setOnClickListener(this)
-		
 		mRcvOrders.layoutManager = LinearLayoutManager(context)
-		// todo: implement onUpdate, onDelete
-		mOrderAdapter = OrdersAdapter(arrayListOf(), {
-			order ->
-			startActivity<AddOrderActivity>(KEY_ORDER to order)
-		}, {
-			order ->
+		mOrderAdapter = OrdersAdapter(arrayListOf(), { mOrdersListListener.onUpdate(it)}, { order ->
 			tryBlock {
 				async(CommonPool) {
 					AppRepository.deleteOrder(order.id)
 				}.await()
-				toast("Deleted")
+				toast("Order Deleted")
 			}
 		})
+		mRcvOrders.adapter = mOrderAdapter
 	}
 	
 	override fun onResume() {
@@ -58,19 +60,12 @@ class OrderFragment : BaseFragment(), View.OnClickListener {
 					clear()
 					addAll(orders)
 				}
-				mRcvOrders.adapter = mOrderAdapter
+				mOrderAdapter.notifyDataSetChanged()
 			}
 		})
 	}
-	
-	override fun onClick(v: View) {
-		when (v.id) {
-			R.id.mFabAddOrder -> {
-				val intent = Intent(context, AddOrderActivity::class.java)
-				intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
-				startActivity(intent)
-			}
-		}
-	}
 }
 
+interface OrdersListListener {
+	fun onUpdate(order: Order)
+}

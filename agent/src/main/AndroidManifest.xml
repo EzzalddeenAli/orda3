@@ -1,6 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="faith.changliu.orda3.agent">
 
+    <uses-permission android:name="android.permission.CAMERA" />
+
     <application
         android:name="faith.changliu.orda3.base.MyApp"
         android:allowBackup="true"
@@ -26,11 +28,7 @@
         <activity android:name=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <activity android:name="faith.changliu.orda3.base.activities.AddRequestActivity"
-            android:launchMode="singleTop" />
-
-        <activity android:name=".AddOrderActivity"
-            android:theme="@style/AppTheme.NoActionBar"
+        <activity android:name=".ScannerActivity"
             android:launchMode="singleTop" />
 
     </application>

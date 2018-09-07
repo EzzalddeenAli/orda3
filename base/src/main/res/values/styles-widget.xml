@@ -27,6 +27,9 @@
         <item name="android:ems">10</item>
         <item name="android:maxLength">200</item>
         <item name="android:padding">12dp</item>
+        <item name="android:layout_marginTop">@dimen/space_small</item>
+        <item name="android:layout_marginEnd">@dimen/space_small</item>
+        <item name="android:layout_marginStart">@dimen/space_small</item>
         <item name="android:background">@drawable/bg_et</item>
         <item name="android:textColor">@android:color/black</item>
     </style>
@@ -34,8 +37,6 @@
     <style name="Et.WithIcon">
         <item name="android:textSize">@dimen/text_size_small</item>
         <item name="android:drawablePadding">@dimen/space_small</item>
-        <item name="android:layout_marginEnd">@dimen/space_small</item>
-        <item name="android:layout_marginStart">@dimen/space_small</item>
     </style>
 
     <style name="Input">

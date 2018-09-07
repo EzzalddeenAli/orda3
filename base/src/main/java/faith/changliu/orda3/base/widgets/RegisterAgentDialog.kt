@@ -77,9 +77,4 @@ class RegisterAgentDialog(ctx: Context) : BaseDialog(ctx), View.OnClickListener 
 			dismissWithToast("User already registered")
 		}
 	}
-
-	private fun dismissWithToast(msg: String) {
-		context.toast(msg)
-		dismiss()
-	}
 }
