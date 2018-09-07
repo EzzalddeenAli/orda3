@@ -72,7 +72,6 @@ class ApplicationsAdapter(
 						isOpen = !isOpen
 					}
 				}
-
 			}
 		}
 	}

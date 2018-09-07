@@ -21,7 +21,6 @@ import kotlinx.android.synthetic.main.fragment_request_detail_text_data.*
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.async
 import org.jetbrains.anko.support.v4.toast
-import java.util.*
 import kotlin.properties.Delegates
 
 class RequestEditFragment : BaseFragment() {
@@ -72,7 +71,7 @@ class RequestEditFragment : BaseFragment() {
 		}
 		
 		mBtnCancelNewRequest.setOnClickListener {
-			toast("Update Cancelled")
+			toast("Update cancelled")
 			mListener.onFinished()
 		}
 		
@@ -95,8 +94,8 @@ class RequestEditFragment : BaseFragment() {
 			
 			val mApplicationsAdapter = ApplicationsAdapter(applications) { application ->
 				mRequest.assignedTo = application.appliedBy
-				mRequest.status = RequestStatus.ASSIGNED
 				mEtAssignedTo.setText(application.appliedBy)
+				mEtStatus.setText(getStatusString(RequestStatus.ASSIGNED))
 				toast("Assigned. Please submit to confirm.")
 			}
 			
@@ -107,7 +106,7 @@ class RequestEditFragment : BaseFragment() {
 	private fun bindTextData(request: Request) {
 		mEtTitle.setText(request.title)
 		mEtDeadline.setText(request.deadline.toString())
-		mEtStatus.setText(getStatus(request.status))
+		mEtStatus.setText(getStatusString(request.status))
 		mEtAssignedTo.setText(request.assignedTo)
 		mEtAddress.setText(request.address)
 		mEtCity.setText(request.city)
@@ -118,11 +117,19 @@ class RequestEditFragment : BaseFragment() {
 		mEtDescription.setText(request.description)
 	}
 	
-	private fun getStatus(status: Int): String {
+	private fun getStatusString(status: Int): String {
 		return when (status) {
 			0 -> "PENDING"
 			1 -> "ASSIGNED"
 			else -> "CLOSED"
+		}
+	}
+	
+	private fun getStatus(statusString: String): Int {
+		return when (statusString) {
+			"PENDING" -> RequestStatus.PENDING
+			"ASSIGNED" -> RequestStatus.ASSIGNED
+			else -> RequestStatus.CLOSED
 		}
 	}
 	
@@ -143,7 +150,7 @@ class RequestEditFragment : BaseFragment() {
 		val compensation = mEtCompensation.getDouble() ?: return
 		val description = mEtDescription.getString() ?: return
 
-		val newRequest = Request(mRequest.id, title, mRequest.status, mRequest.assignedTo, mRequest.deadline, country, city, address, weight, volume, compensation, description, mRequest.createdAt, UserPref.getId(), UserPref.getEmail())
+		val newRequest = Request(mRequest.id, title, getStatus(mEtStatus.text.toString()), mEtAssignedTo.text.toString(), mRequest.deadline, country, city, address, weight, volume, compensation, description, mRequest.createdAt, UserPref.getId(), UserPref.getEmail())
 
 		tryBlock {
 			async(CommonPool) {
@@ -165,7 +172,9 @@ class RequestEditFragment : BaseFragment() {
 			}
 		} else {
 			mBtnCloseRequest.snackConfirm("Confirm Closing Request") {
-				RatingDialog(context!!).show()
+				RatingDialog(context!!, mRequest) {
+					mListener.onFinished()
+				}.show()
 			}
 		}
 	}

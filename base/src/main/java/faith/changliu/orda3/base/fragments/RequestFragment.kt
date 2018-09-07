@@ -8,6 +8,7 @@ import faith.changliu.orda3.base.BaseFragment
 import faith.changliu.orda3.base.R
 import faith.changliu.orda3.base.data.models.Request
 import faith.changliu.orda3.base.utils.FRAG_TAG_REQUEST_DETAIL
+import faith.changliu.orda3.base.utils.log
 import kotlinx.android.synthetic.main.fragment_requests.*
 
 class RequestFragment : BaseFragment() {
@@ -43,16 +44,18 @@ class RequestFragment : BaseFragment() {
 			// todo: phone
 			object : RequestListListener {
 				override fun onUpdate(request: Request) {
+					val requestCopy = request.copy()
 					activity?.supportFragmentManager?.beginTransaction()
-							?.add(R.id.requests_list_container, RequestEditFragment.newInstance(request, mEditListener), FRAG_TAG_REQUEST_DETAIL)
+							?.add(R.id.requests_list_container, RequestEditFragment.newInstance(requestCopy, mEditListener), FRAG_TAG_REQUEST_DETAIL)
 							?.commit()
 				}
 			}
 		} else {
 			object : RequestListListener {
 				override fun onUpdate(request: Request) {
+					val requestCopy = request.copy()
 					activity?.supportFragmentManager?.beginTransaction()
-							?.replace(R.id.request_detail_container, RequestEditFragment.newInstance(request, mEditListener), FRAG_TAG_REQUEST_DETAIL)
+							?.replace(R.id.request_detail_container, RequestEditFragment.newInstance(requestCopy, mEditListener), FRAG_TAG_REQUEST_DETAIL)
 							?.commit()
 				}
 			}

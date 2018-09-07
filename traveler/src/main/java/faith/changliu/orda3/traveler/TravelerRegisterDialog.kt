@@ -77,10 +77,4 @@ class TravelerRegisterDialog(ctx: Context, private val toMain: () -> Unit) : Bas
 			}
 		}
 	}
-
-
-	private fun dismissWithToast(msg: String) {
-		context.toast(msg)
-		dismiss()
-	}
 }
