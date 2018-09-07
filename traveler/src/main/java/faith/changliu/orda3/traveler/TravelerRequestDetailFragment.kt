@@ -15,6 +15,7 @@ class TravelerRequestDetailFragment : BaseFragment() {
 	
 	private var mRequest by Delegates.observable(Request()) { _, _, newValue ->
 		mTvTitle.text = newValue.title
+		mCusTVTitle.setText(newValue.title)
 	}
 	
 	companion object {

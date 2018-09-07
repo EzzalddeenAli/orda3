@@ -20,6 +20,13 @@
         android:layout_width="0dp"
         android:layout_weight="0.65"
         android:layout_margin="@dimen/space_small"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
+        <TextView
+            android:text="NO DETAIL"
+            android:gravity="center"
+            android:textSize="@dimen/text_size_large"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </FrameLayout>
 
 </LinearLayout>
