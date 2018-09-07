@@ -28,32 +28,32 @@ class TravelerMainActivity : BaseActivity() {
 	private val mViewModel by lazy { RequestViewModel() }
 	private lateinit var mRequestAdapter: TravelerRequestsAdapter
 
-	private val onApply by lazy {
-		{ request: Request ->
-			// todo:
-			mRcvRequests.snackConfirm(request.toString()) {
-				// todo: more efficient way to get id
-				val id = request.id + UserPref.getId().subSequence(0, 3)
-				val newApplication = RequestApplication(id, request.id, UserPref.getId(), Date())
-
-				tryBlock {
-					// check if id exists
-					val hasApplied = async(CommonPool) {
-						FireDB.hasApplied(id)
-					}.await()
-
-					if (hasApplied) {
-						toast("You Already Applied")
-					} else {
-						async(CommonPool) {
-							FireDB.saveApplication(newApplication)
-						}.await()
-						toast("Apply Submitted")
-					}
-				}
-			}
-		}
-	}
+//	private val onApply by lazy {
+//		{ request: Request ->
+//			// todo:
+//			mRcvRequests.snackConfirm(request.toString()) {
+//				// todo: more efficient way to get id
+//				val id = request.id + UserPref.getId().subSequence(0, 3)
+//				val newApplication = RequestApplication(id, request.id, UserPref.getId(), Date())
+//
+//				tryBlock {
+//					// check if id exists
+//					val hasApplied = async(CommonPool) {
+//						FireDB.hasApplied(id)
+//					}.await()
+//
+//					if (hasApplied) {
+//						toast("You Already Applied")
+//					} else {
+//						async(CommonPool) {
+//							FireDB.saveApplication(newApplication)
+//						}.await()
+//						toast("Apply Submitted")
+//					}
+//				}
+//			}
+//		}
+//	}
 
 	private val onContactAgent by lazy {
 		{ request: Request ->
@@ -68,24 +68,32 @@ class TravelerMainActivity : BaseActivity() {
 		setContentView(R.layout.activity_traveler_main)
 		setSupportActionBar(toolbar)
 
-		mRcvRequests.layoutManager = LinearLayoutManager(this)
-		mRequestAdapter = TravelerRequestsAdapter(arrayListOf(), onContactAgent, onApply)
-
-		// todo: debug, to be removed
-		toast(UserPref.getId())
+		supportFragmentManager.beginTransaction()
+				.replace(R.id.requests_list_container, TravelerRequestsListFragment.newInstance())
+				.commit()
+		
+		supportFragmentManager.beginTransaction()
+				.replace(R.id.request_detail_container, TravelerRequestDetailFragment.newInstance())
+				.commit()
+		
+//		mRcvRequests.layoutManager = LinearLayoutManager(this)
+//		mRequestAdapter = TravelerRequestsAdapter(arrayListOf(), onContactAgent, onApply)
+//
+//		// todo: debug, to be removed
+//		toast(UserPref.getId())
 	}
 
 	override fun onResume() {
 		super.onResume()
-		mViewModel.requests.observe(this, Observer { requests ->
-			requests?.let {
-				mRequestAdapter.requests.apply {
-					clear()
-					addAll(it)
-				}
-				mRcvRequests.adapter = mRequestAdapter
-			}
-		})
+//		mViewModel.requests.observe(this, Observer { requests ->
+//			requests?.let {
+//				mRequestAdapter.requests.apply {
+//					clear()
+//					addAll(it)
+//				}
+//				mRcvRequests.adapter = mRequestAdapter
+//			}
+//		})
 	}
 
 	override fun onCreateOptionsMenu(menu: Menu?): Boolean {
