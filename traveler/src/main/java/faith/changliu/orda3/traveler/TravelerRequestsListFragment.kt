@@ -49,33 +49,6 @@ class TravelerRequestsListFragment : BaseFragment() {
 			}
 		})
 	}
-
-//	private val onApply by lazy {
-//		{ request: Request ->
-//			// todo:
-//			mRcvRequests.snackConfirm(request.toString()) {
-//				// todo: more efficient way to get id
-//				val id = request.id + UserPref.getId().subSequence(0, 3)
-//				val newApplication = RequestApplication(id, request.id, UserPref.getId(), Date())
-//
-//				tryBlock {
-//					// check if id exists
-//					val hasApplied = async(CommonPool) {
-//						FireDB.hasApplied(id)
-//					}.await()
-//
-//					if (hasApplied) {
-//						toast("You Already Applied")
-//					} else {
-//						async(CommonPool) {
-//							FireDB.saveApplication(newApplication)
-//						}.await()
-//						toast("Apply Submitted")
-//					}
-//				}
-//			}
-//		}
-//	}
 	
 	interface Listener {
 		fun onShowDetail(request: Request)

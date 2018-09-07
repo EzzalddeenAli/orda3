@@ -22,17 +22,26 @@ class TravelerMainActivity : BaseActivity() {
 			Unit
 		}
 	}
+	
+	private val requestDetailListener = object : TravelerRequestDetailFragment.Listener {
+		override fun onFinished() {
+			supportFragmentManager.beginTransaction().remove(
+					supportFragmentManager.findFragmentByTag(FRAG_TAG_REQUEST_DETAIL)
+			).commit()
+		}
+		
+	}
 
 	private val requestsListListener = object : TravelerRequestsListFragment.Listener {
 		override fun onShowDetail(request: Request) {
 			if (request_detail_container == null) {
 				supportFragmentManager.beginTransaction()
 						.addToBackStack(null)
-						.add(R.id.requests_list_container, TravelerRequestDetailFragment.newInstance(request), FRAG_TAG_REQUEST_DETAIL)
+						.add(R.id.requests_list_container, TravelerRequestDetailFragment.newInstance(request, requestDetailListener), FRAG_TAG_REQUEST_DETAIL)
 						.commit()
 			} else {
 				supportFragmentManager.beginTransaction()
-						.replace(R.id.request_detail_container, TravelerRequestDetailFragment.newInstance(request), FRAG_TAG_REQUEST_DETAIL)
+						.replace(R.id.request_detail_container, TravelerRequestDetailFragment.newInstance(request, requestDetailListener), FRAG_TAG_REQUEST_DETAIL)
 						.commit()
 			}
 		}
