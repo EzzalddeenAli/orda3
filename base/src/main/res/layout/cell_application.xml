@@ -72,9 +72,9 @@
         android:layout_height="wrap_content">
 
         <Button
-            android:id="@+id/mBtnCancel"
-            android:text="Cancel"
-            android:textColor="@color/black_overlay"
+            android:id="@+id/mBtnEmailTraveler"
+            android:text="Email"
+            android:textColor="@color/white_overlay"
             android:backgroundTint="@android:color/holo_red_light"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />

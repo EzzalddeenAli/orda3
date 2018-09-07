@@ -12,6 +12,7 @@ import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.launch
+import org.jetbrains.anko.email
 import kotlin.properties.Delegates
 
 class ApplicationsAdapter(
@@ -63,8 +64,9 @@ class ApplicationsAdapter(
 						onAssign(application)
 						isOpen = false
 					}
-					mBtnCancel.setOnClickListener {
-						// todo
+					mBtnEmailTraveler.setOnClickListener {
+						// todo: change btn name: cancel -> email
+						context.email(user.email, "From Orda Agent", "Still interested in applying the request? Please reply if yes. Thanks")
 						isOpen = false
 					}
 

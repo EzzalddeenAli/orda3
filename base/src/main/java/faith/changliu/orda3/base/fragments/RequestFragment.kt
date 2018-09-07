@@ -46,6 +46,7 @@ class RequestFragment : BaseFragment() {
 				override fun onUpdate(request: Request) {
 					val requestCopy = request.copy()
 					activity?.supportFragmentManager?.beginTransaction()
+							?.addToBackStack(null)
 							?.add(R.id.requests_list_container, RequestEditFragment.newInstance(requestCopy, mEditListener), FRAG_TAG_REQUEST_DETAIL)
 							?.commit()
 				}

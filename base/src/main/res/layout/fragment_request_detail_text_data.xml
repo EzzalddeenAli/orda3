@@ -47,7 +47,7 @@
             android:layout_height="wrap_content"
             android:inputType="text"
             android:focusable="false"
-            android:maxLength="10"
+            android:maxLength="30"
             android:hint="Status" />
 
     </android.support.design.widget.TextInputLayout>
@@ -64,7 +64,7 @@
             android:layout_height="wrap_content"
             android:inputType="text"
             android:focusable="false"
-            android:maxLength="20"
+            android:maxLength="40"
             android:hint="Assigned To" />
 
     </android.support.design.widget.TextInputLayout>
