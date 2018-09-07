@@ -48,6 +48,12 @@
         <item name="android:textSize">@dimen/text_size_small</item>
     </style>
 
+    <style name="Hint">
+        <item name="android:textSize">@dimen/text_size_large</item>
+        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <!-- Button -->
     <style name="Btn">
         <item name="android:layout_width">0dp</item>

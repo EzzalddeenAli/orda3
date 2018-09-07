@@ -7,9 +7,7 @@
     <TextView
         android:id="@+id/mTvHint"
         android:text="Hint"
-        android:textStyle="bold"
-        android:textSize="@dimen/text_size_small"
-        android:textColor="@color/colorAccent"
+        style="@style/Hint"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
@@ -17,8 +15,7 @@
         android:id="@+id/mTvContent"
         android:text="Some Content"
         android:textColor="@color/colorBlack"
-        android:textSize="@dimen/text_size_medium"
-        android:padding="@dimen/space_small"
+        android:textSize="@dimen/text_size_small"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

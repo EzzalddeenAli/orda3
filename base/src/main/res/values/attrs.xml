@@ -3,4 +3,8 @@
         <attr name="hint" format="string" />
     </declare-styleable>
 
+    <declare-styleable name="CusEditText">
+        <attr name="cus_et_hint" format="string" />
+    </declare-styleable>
+
 </resources>
