@@ -5,7 +5,9 @@ import android.view.Menu
 import android.view.MenuItem
 import faith.changliu.orda3.base.BaseActivity
 import faith.changliu.orda3.base.data.models.Request
+import faith.changliu.orda3.base.utils.FRAG_TAG_REQUEST_DETAIL
 import kotlinx.android.synthetic.main.activity_traveler_main.*
+import kotlinx.android.synthetic.main.content_traveler_main.*
 import org.jetbrains.anko.email
 import org.jetbrains.anko.toast
 
@@ -23,9 +25,17 @@ class TravelerMainActivity : BaseActivity() {
 
 	private val requestsListListener = object : TravelerRequestsListFragment.Listener {
 		override fun onShowDetail(request: Request) {
-			toast("Hi: ${request.title}")
+			if (request_detail_container == null) {
+				supportFragmentManager.beginTransaction()
+						.addToBackStack(null)
+						.add(R.id.requests_list_container, TravelerRequestDetailFragment.newInstance(request), FRAG_TAG_REQUEST_DETAIL)
+						.commit()
+			} else {
+				supportFragmentManager.beginTransaction()
+						.replace(R.id.request_detail_container, TravelerRequestDetailFragment.newInstance(request), FRAG_TAG_REQUEST_DETAIL)
+						.commit()
+			}
 		}
-		
 	}
 	
 	override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,9 +47,7 @@ class TravelerMainActivity : BaseActivity() {
 				.replace(R.id.requests_list_container, TravelerRequestsListFragment.newInstance(requestsListListener))
 				.commit()
 		
-//		supportFragmentManager.beginTransaction()
-//				.replace(R.id.request_detail_container, TravelerRequestDetailFragment.newInstance())
-//				.commit()
+
 	}
 
 	override fun onCreateOptionsMenu(menu: Menu?): Boolean {
