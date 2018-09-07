@@ -6,16 +6,22 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import faith.changliu.orda3.base.BaseFragment
 import faith.changliu.orda3.base.data.models.Request
+import faith.changliu.orda3.base.data.preferences.UserPref
 import faith.changliu.orda3.base.data.viewmodels.RequestViewModel
 import kotlinx.android.synthetic.main.fragment_requests_list_traveler.*
+import kotlin.properties.Delegates
 
 class TravelerRequestsListFragment : BaseFragment() {
 	
 	private val mViewModel by lazy { RequestViewModel() }
 	private lateinit var mRequestAdapter: TravelerRequestsAdapter
 	private lateinit var mListener: Listener
+	private var requestCategory by Delegates.observable(0) { _, _, newValue ->
+		updateRequestList()
+	}
 	
 	companion object {
 		fun newInstance(listener: Listener): TravelerRequestsListFragment {
@@ -39,13 +45,32 @@ class TravelerRequestsListFragment : BaseFragment() {
 			layoutManager = LinearLayoutManager(context)
 			adapter = mRequestAdapter
 		}
+		
+		mSpinnerRequestCategory.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+			override fun onNothingSelected(parent: AdapterView<*>?) {}
+			
+			override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+				if (requestCategory != position) requestCategory = position
+			}
+			
+		}
 	}
 	
 	override fun onResume() {
 		super.onResume()
+		updateRequestList()
+	}
+	
+	private fun updateRequestList() {
 		mViewModel.requests.observe(this, Observer { requests ->
-			requests?.let {
-				mRequestAdapter.updateRequests(it)
+			requests?.let { requestsNotEmpty ->
+				// 0 for all, 1 for assigned to this user only
+				val userId = UserPref.getId()
+				val requestsFiltered =
+						if (requestCategory == 0) requestsNotEmpty
+						else requestsNotEmpty.filter { it.assignedTo == userId}
+				
+				mRequestAdapter.updateRequests(requestsFiltered)
 			}
 		})
 	}
