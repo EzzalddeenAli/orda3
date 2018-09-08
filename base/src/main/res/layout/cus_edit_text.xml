@@ -14,7 +14,6 @@
             android:id="@+id/mEtInput"
             android:hint="@string/email"
             android:textSize="@dimen/text_size_small"
-            android:text="bobbyliu117@gmail.com"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
