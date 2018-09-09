@@ -12,8 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".AgentSplashActivity"
+        <activity android:name=".activities.AgentSplashActivity"
             android:launchMode="singleTop"
+            android:screenOrientation="locked"
             android:theme="@style/AppTheme.FullScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,14 +22,14 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".AgentLoginActivity"
+        <activity android:name=".activities.AgentLoginActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:launchMode="singleTop" />
 
-        <activity android:name=".MainActivity"
+        <activity android:name=".activities.MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <activity android:name=".ScannerActivity"
+        <activity android:name=".activities.ScannerActivity"
             android:launchMode="singleTop" />
 
     </application>

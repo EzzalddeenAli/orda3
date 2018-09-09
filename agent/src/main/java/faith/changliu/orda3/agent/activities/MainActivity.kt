@@ -1,4 +1,4 @@
-package faith.changliu.orda3.agent
+package faith.changliu.orda3.agent.activities
 
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
@@ -9,6 +9,8 @@ import android.support.v4.app.FragmentPagerAdapter
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.view.MenuItem
+import faith.changliu.orda3.agent.R
+import faith.changliu.orda3.agent.SimplePageListener
 import faith.changliu.orda3.agent.fragments.OrderFragment
 import faith.changliu.orda3.agent.fragments.account.AgentAccountFragment
 import faith.changliu.orda3.base.BaseActivity
@@ -27,9 +29,9 @@ class MainActivity : BaseActivity(),
 	private val onPageChangeListener by lazy {
 		SimplePageListener { position ->
 			when (position) {
-				0 -> mNavBottom.selectedItemId =  R.id.mNavShipping
-				1 -> mNavBottom.selectedItemId =  R.id.mNavRequests
-				2 -> mNavBottom.selectedItemId =  R.id.mNavAccount
+				0 -> mNavBottom.selectedItemId = R.id.mNavShipping
+				1 -> mNavBottom.selectedItemId = R.id.mNavRequests
+				2 -> mNavBottom.selectedItemId = R.id.mNavAccount
 			}
 		}
 	}

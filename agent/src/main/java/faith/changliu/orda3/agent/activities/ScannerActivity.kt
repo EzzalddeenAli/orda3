@@ -1,4 +1,4 @@
-package faith.changliu.orda3.agent
+package faith.changliu.orda3.agent.activities
 
 import android.app.Activity
 import android.content.Intent

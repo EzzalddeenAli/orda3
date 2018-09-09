@@ -9,7 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import faith.changliu.orda3.agent.R
-import faith.changliu.orda3.agent.ScannerActivity
+import faith.changliu.orda3.agent.activities.ScannerActivity
 import faith.changliu.orda3.base.BaseFragment
 import faith.changliu.orda3.base.data.AppRepository
 import faith.changliu.orda3.base.data.models.Order

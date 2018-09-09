@@ -13,6 +13,7 @@
         <activity
             android:name=".TravelerSplashActivity"
             android:launchMode="singleTop"
+            android:screenOrientation="locked"
             android:theme="@style/AppTheme.FullScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
