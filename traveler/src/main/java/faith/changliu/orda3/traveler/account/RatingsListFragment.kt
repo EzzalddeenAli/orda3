@@ -6,10 +6,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import faith.changliu.orda3.base.BaseFragment
+import faith.changliu.orda3.base.data.firebase.firestore.FireDB
 import faith.changliu.orda3.base.data.models.Rating
+import faith.changliu.orda3.base.data.preferences.UserPref
 import faith.changliu.orda3.base.utils.log
+import faith.changliu.orda3.base.utils.tryBlock
 import faith.changliu.orda3.traveler.R
 import kotlinx.android.synthetic.main.fragment_ratings_list_traveler.*
+import kotlinx.coroutines.experimental.CommonPool
+import kotlinx.coroutines.experimental.async
 import java.util.*
 
 class RatingsListFragment : BaseFragment() {
@@ -33,13 +38,19 @@ class RatingsListFragment : BaseFragment() {
 		
 		mRcvRatings.apply {
 			layoutManager = LinearLayoutManager(context)
-			adapter = TravelerRatingAdapter(arrayListOf(
-					Rating("1", "Agent ID", "Traveler ID", 4.0, Date(), "Comment 1"),
-					Rating("1", "Agent ID", "Traveler ID", 4.0, Date(), "Comment 1"),
-					Rating("1", "Agent ID", "Traveler ID", 4.0, Date(), "Comment 1"),
-					Rating("1", "Agent ID", "Traveler ID", 4.0, Date(), "Comment 1"),
-					Rating("1", "Agent ID", "Traveler ID", 4.0, Date(), "Comment 1")
-			))
+			
+			tryBlock {
+				val ratings = async(CommonPool) {
+					FireDB.readAllRatingsForTravelerId(UserPref.getId())
+				}.await()
+				adapter = TravelerRatingAdapter(ratings)
+				
+				var total = 0.0
+				ratings.map { total += it.rate }
+				val avgRating = total / ratings.size
+				
+				mTvAvgRating.text = "Average Rating: $avgRating"
+			}
 		}
 	}
 }
