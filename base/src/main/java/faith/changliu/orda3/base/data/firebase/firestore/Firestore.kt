@@ -91,6 +91,10 @@ object FireDB {
 	suspend fun readAllRatingsForTravelerId(travelerId: String): ArrayList<Rating> {
 		return mFirestore.readAllRatingsForTravelerId(travelerId)
 	}
+	
+	suspend fun readAllRatingsForAgentId(agentId: String): ArrayList<Rating> {
+		return mFirestore.readAllRatingsForAgentId(agentId)
+	}
 
 	// endregion
 }

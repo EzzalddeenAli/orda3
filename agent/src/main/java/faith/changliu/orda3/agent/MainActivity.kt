@@ -10,6 +10,7 @@ import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.view.MenuItem
 import faith.changliu.orda3.agent.fragments.OrderFragment
+import faith.changliu.orda3.agent.fragments.account.AgentAccountFragment
 import faith.changliu.orda3.base.BaseActivity
 import faith.changliu.orda3.base.BaseFragment
 import faith.changliu.orda3.base.fragments.RequestFragment
@@ -38,7 +39,7 @@ class MainActivity : BaseActivity(),
 		setContentView(R.layout.activity_main)
 		setSupportActionBar(toolbar)
 
-		frags = listOf(OrderFragment(), RequestFragment(), AccountFragment())
+		frags = listOf(OrderFragment(), RequestFragment(), AgentAccountFragment.newInstance())
 
 		// init views
 		mPager.apply {

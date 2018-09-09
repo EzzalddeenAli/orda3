@@ -10,10 +10,7 @@ import faith.changliu.orda3.base.data.firebase.firestore.FireDB
 import faith.changliu.orda3.base.data.models.User
 import faith.changliu.orda3.base.data.models.UserStatus
 import faith.changliu.orda3.base.data.preferences.UserPref
-import faith.changliu.orda3.base.utils.log
-import faith.changliu.orda3.base.utils.slideIn
-import faith.changliu.orda3.base.utils.slideOut
-import faith.changliu.orda3.base.utils.tryBlock
+import faith.changliu.orda3.base.utils.*
 import kotlinx.android.synthetic.main.fragment_account_base.*
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.async
@@ -21,8 +18,6 @@ import org.jetbrains.anko.support.v4.toast
 import java.util.*
 
 open class BaseAccountFragment : BaseFragment() {
-	
-	protected lateinit var ratingFragment: BaseFragment
 	
 	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 		return inflater.inflate(R.layout.fragment_account_base, container, false)
@@ -60,6 +55,7 @@ open class BaseAccountFragment : BaseFragment() {
 			}
 		}
 	}
+	
 	
 	private fun getNewUser(): User? {
 		

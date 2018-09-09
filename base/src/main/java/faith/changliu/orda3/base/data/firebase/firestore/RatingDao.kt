@@ -32,3 +32,18 @@ suspend fun FirebaseFirestore.readAllRatingsForTravelerId(travelerId: String) = 
 		cont.resumeWithException(ex)
 	}.addOnCanceledListener { cont.cancel() }
 }
+
+suspend fun FirebaseFirestore.readAllRatingsForAgentId(agentId: String) = suspendCancellableCoroutine<ArrayList<Rating>> { cont ->
+	val ratings = arrayListOf<Rating>()
+	collection(RATINGS).whereEqualTo("agentId", agentId).get().addOnSuccessListener { snapshot ->
+		snapshot.forEach { doc ->
+			doc?.toObject(Rating::class.java)?.let { rating ->
+				ratings.add(rating)
+			}
+		}
+		cont.resume(ratings)
+	}.addOnFailureListener { ex ->
+		ex.printStackTrace()
+		cont.resumeWithException(ex)
+	}.addOnCanceledListener { cont.cancel() }
+}
