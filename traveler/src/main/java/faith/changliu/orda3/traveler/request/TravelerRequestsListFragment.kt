@@ -1,4 +1,4 @@
-package faith.changliu.orda3.traveler
+package faith.changliu.orda3.traveler.request
 
 import android.arch.lifecycle.Observer
 import android.os.Bundle
@@ -11,6 +11,7 @@ import faith.changliu.orda3.base.BaseFragment
 import faith.changliu.orda3.base.data.models.Request
 import faith.changliu.orda3.base.data.preferences.UserPref
 import faith.changliu.orda3.base.data.viewmodels.RequestViewModel
+import faith.changliu.orda3.traveler.R
 import kotlinx.android.synthetic.main.fragment_requests_list_traveler.*
 import kotlin.properties.Delegates
 

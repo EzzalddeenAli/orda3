@@ -1,12 +1,12 @@
-package faith.changliu.orda3.traveler
+package faith.changliu.orda3.traveler.request
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import faith.changliu.orda3.base.data.models.Request
+import faith.changliu.orda3.traveler.R
 import kotlinx.android.synthetic.main.cell_request_traveler.view.*
-import kotlin.properties.Delegates
 
 class TravelerRequestsAdapter(
 		private var requests: ArrayList<Request>,

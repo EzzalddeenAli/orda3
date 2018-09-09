@@ -17,23 +17,30 @@ class CusRatingBar @JvmOverloads constructor(
 		setAllRatingDown()
 		setRatingDisplay(newValue)
 	}
+	private var mIsClickable: Boolean
 
 	init {
+		
+		val typedArray = context.obtainStyledAttributes(attrs, R.styleable.CusRatingBar)
+		mIsClickable = typedArray.getBoolean(R.styleable.CusRatingBar_isClickable, true)
+		
 		View.inflate(context, R.layout.widget_rating_bar, this)
-		mBtnRating5.setOnClickListener {
-			mRating = 5.0
-		}
-		mBtnRating4.setOnClickListener {
-			mRating = 4.0
-		}
-		mBtnRating3.setOnClickListener {
-			mRating = 3.0
-		}
-		mBtnRating2.setOnClickListener {
-			mRating = 2.0
-		}
-		mBtnRating1.setOnClickListener {
-			mRating = 1.0
+		if (mIsClickable) {
+			mBtnRating5.setOnClickListener {
+				mRating = 5.0
+			}
+			mBtnRating4.setOnClickListener {
+				mRating = 4.0
+			}
+			mBtnRating3.setOnClickListener {
+				mRating = 3.0
+			}
+			mBtnRating2.setOnClickListener {
+				mRating = 2.0
+			}
+			mBtnRating1.setOnClickListener {
+				mRating = 1.0
+			}
 		}
 	}
 	

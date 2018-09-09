@@ -8,8 +8,6 @@ import faith.changliu.orda3.base.BaseFragment
 import faith.changliu.orda3.base.data.models.Request
 import faith.changliu.orda3.base.utils.FRAG_TAG_REQUEST_DETAIL
 import faith.changliu.orda3.traveler.R
-import faith.changliu.orda3.traveler.TravelerRequestDetailFragment
-import faith.changliu.orda3.traveler.TravelerRequestsListFragment
 import kotlinx.android.synthetic.main.content_traveler_main.*
 
 class TravelerRequestFragment : BaseFragment() {

@@ -1,4 +1,4 @@
-package faith.changliu.orda3.traveler
+package faith.changliu.orda3.traveler.request
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,6 +12,7 @@ import faith.changliu.orda3.base.data.preferences.UserPref
 import faith.changliu.orda3.base.utils.KEY_REQUEST
 import faith.changliu.orda3.base.utils.snackConfirm
 import faith.changliu.orda3.base.utils.tryBlock
+import faith.changliu.orda3.traveler.R
 import kotlinx.android.synthetic.main.fragment_request_detail_traveler.*
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.async

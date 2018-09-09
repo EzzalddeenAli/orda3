@@ -6,6 +6,7 @@ import android.view.MenuItem
 import faith.changliu.orda3.base.BaseActivity
 import faith.changliu.orda3.base.data.models.Request
 import faith.changliu.orda3.base.utils.FRAG_TAG_REQUEST_DETAIL
+import faith.changliu.orda3.traveler.account.RatingsListFragment
 import faith.changliu.orda3.traveler.account.TravelerAccountFragment
 import faith.changliu.orda3.traveler.request.TravelerRequestFragment
 import kotlinx.android.synthetic.main.activity_traveler_main.*
@@ -14,8 +15,6 @@ import org.jetbrains.anko.email
 import org.jetbrains.anko.toast
 
 class TravelerMainActivity : BaseActivity() {
-	
-
 	
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
