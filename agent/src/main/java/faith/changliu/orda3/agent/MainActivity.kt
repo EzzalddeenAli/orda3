@@ -55,7 +55,11 @@ class MainActivity : BaseActivity(),
 		mNavDrawer.setNavigationItemSelectedListener(this)
 		mNavBottom.setOnNavigationItemSelectedListener(this)
 	}
-
+	
+	override fun onSaveInstanceState(outState: Bundle?) {
+		super.onSaveInstanceState(outState)
+		outState?.putString("key", "key")
+	}
 
 	override fun onBackPressed() {
 		if (drawer_layout.isDrawerOpen(GravityCompat.START)) {

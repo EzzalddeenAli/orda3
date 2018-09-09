@@ -1,5 +1,7 @@
 package faith.changliu.orda3.base.fragments.account
 
+import android.content.Context
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +13,7 @@ import faith.changliu.orda3.base.data.models.User
 import faith.changliu.orda3.base.data.models.UserStatus
 import faith.changliu.orda3.base.data.preferences.UserPref
 import faith.changliu.orda3.base.utils.*
+import kotlinx.android.synthetic.*
 import kotlinx.android.synthetic.main.fragment_account_base.*
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.async
@@ -19,12 +22,15 @@ import java.util.*
 
 open class BaseAccountFragment : BaseFragment() {
 	
+	private var shouldAnimate = true
+	
 	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 		return inflater.inflate(R.layout.fragment_account_base, container, false)
 	}
 	
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
+		shouldAnimate = savedInstanceState == null
 		
 		mCusTvEmail.setText(UserPref.getEmail())
 		
@@ -33,14 +39,17 @@ open class BaseAccountFragment : BaseFragment() {
 				// todo: mover cursor to the end
 				mCusEtZipcode.text = s.substring(0, 6)
 			}
-			mBtnUpdateUser.slideIn(100f)
+			
+			slideIn()
 		}
 		
 		mCusEtName.setOnTextChangeListener {
-			mBtnUpdateUser.slideIn(100f)
+			slideIn()
 		}
 		
-		mCusEtPhone.setOnTextChangeListener { mBtnUpdateUser.slideIn(100f) }
+		mCusEtPhone.setOnTextChangeListener {
+			slideIn()
+		}
 	
 		mBtnUpdateUser.setOnClickListener {
 			getNewUser()?.let { user ->
@@ -56,6 +65,14 @@ open class BaseAccountFragment : BaseFragment() {
 		}
 	}
 	
+	override fun onResume() {
+		super.onResume()
+		shouldAnimate = true
+	}
+	
+	private fun slideIn() {
+		if (shouldAnimate) mBtnUpdateUser.slideIn(100f)
+	}
 	
 	private fun getNewUser(): User? {
 		
