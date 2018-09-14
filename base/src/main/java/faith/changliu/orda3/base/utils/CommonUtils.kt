@@ -20,6 +20,8 @@ import kotlinx.coroutines.experimental.launch
 import org.jetbrains.anko.clearTop
 import org.jetbrains.anko.support.v4.toast
 import org.jetbrains.anko.toast
+import java.text.SimpleDateFormat
+import java.util.*
 
 private val cm = AppContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
@@ -40,6 +42,20 @@ fun Activity.checkPermissionFor(requestCode: Int, permission: String, onGrantedL
 	} else {
 		ActivityCompat.requestPermissions(this, arrayOf(permission), requestCode)
 	}
+}
+
+/**
+ * Parse year, month, day to Date
+ */
+fun parseToDate(year: Int, month: Int, day: Int): Date {
+	val df = SimpleDateFormat("MM/dd/yyyy")
+	val dateString = "$month/$day/$year"
+	return df.parse(dateString)
+}
+
+fun parseDateToString(date: Date): String {
+	val df = SimpleDateFormat("MM/dd/yyyy")
+	return df.format(date)
 }
 
 /**

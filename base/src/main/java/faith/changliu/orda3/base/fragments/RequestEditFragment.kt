@@ -1,5 +1,7 @@
 package faith.changliu.orda3.base.fragments
 
+import android.app.DatePickerDialog
+import android.icu.util.GregorianCalendar
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
@@ -21,12 +23,20 @@ import kotlinx.android.synthetic.main.fragment_request_detail_text_data.*
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.async
 import org.jetbrains.anko.support.v4.toast
+import java.util.*
 import kotlin.properties.Delegates
 
 class RequestEditFragment : BaseFragment() {
 	
 	private var mRequest by Delegates.observable(Request()) { _, _, newValue ->
 		bind(newValue)
+		mDeadline = newValue.deadline
+	}
+	
+	private var mDeadline by Delegates.observable(Date(0)) { _, _, newValue ->
+		if (newValue.time != 0.toLong()) {
+			mEtDeadline.setText(parseDateToString(newValue))
+		}
 	}
 	
 	private lateinit var mListener: RequestEditListener
@@ -64,6 +74,19 @@ class RequestEditFragment : BaseFragment() {
 			mBtnSubmitNewRequest.setVisible(false)
 			
 			// endregion
+		}
+		
+		mEtDeadline.setOnClickListener { _ ->
+			val calendar = java.util.GregorianCalendar()
+			calendar.time = mDeadline
+			val year = calendar.get(java.util.GregorianCalendar.YEAR)
+			val month = calendar.get(java.util.GregorianCalendar.MONTH)
+			val day = calendar.get(java.util.GregorianCalendar.DAY_OF_MONTH)
+			
+			val datePicker = DatePickerDialog(context, DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
+				mDeadline = parseToDate(year, month + 1, dayOfMonth)
+			}, year, month, day)
+			datePicker.show()
 		}
 		
 		mBtnSubmitNewRequest.setOnClickListener {
@@ -105,7 +128,7 @@ class RequestEditFragment : BaseFragment() {
 	
 	private fun bindTextData(request: Request) {
 		mEtTitle.setText(request.title)
-		mEtDeadline.setText(request.deadline.toString())
+//		mEtDeadline.setText(request.deadline.toString())
 		mEtStatus.setText(getStatusString(request.status))
 		mEtAssignedTo.setText(request.assignedTo)
 		mEtAddress.setText(request.address)
@@ -150,7 +173,7 @@ class RequestEditFragment : BaseFragment() {
 		val compensation = mEtCompensation.getDouble() ?: return
 		val description = mEtDescription.getString() ?: return
 
-		val newRequest = Request(mRequest.id, title, getStatus(mEtStatus.text.toString()), mEtAssignedTo.text.toString(), mRequest.deadline, country, city, address, weight, volume, compensation, description, mRequest.createdAt, UserPref.getId(), UserPref.getEmail())
+		val newRequest = Request(mRequest.id, title, getStatus(mEtStatus.text.toString()), mEtAssignedTo.text.toString(), mDeadline, country, city, address, weight, volume, compensation, description, mRequest.createdAt, UserPref.getId(), UserPref.getEmail())
 
 		tryBlock {
 			async(CommonPool) {
