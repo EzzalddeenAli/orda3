@@ -37,6 +37,7 @@ abstract class BaseLoginActivity : BaseActivity(), View.OnClickListener {
 
 	private fun setupViews() {
 		mBtnRegister.setText(mRegisterTextResId)
+		if (mUserType == UserType.TRAVELER) mImvBox.setImageResource(R.drawable.ic_airplane)
 	}
 
 	override fun onClick(v: View) {

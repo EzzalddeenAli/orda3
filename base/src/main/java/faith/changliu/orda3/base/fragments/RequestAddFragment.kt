@@ -15,6 +15,7 @@ import faith.changliu.orda3.base.utils.getDouble
 import faith.changliu.orda3.base.utils.getString
 import faith.changliu.orda3.base.utils.setVisible
 import faith.changliu.orda3.base.utils.tryBlock
+import faith.changliu.orda3.base.widgets.PickDateDialog
 import kotlinx.android.synthetic.main.fragment_request_detail.*
 import kotlinx.android.synthetic.main.fragment_request_detail_text_data.*
 import kotlinx.coroutines.experimental.CommonPool
@@ -50,8 +51,10 @@ class RequestAddFragment : BaseFragment() {
 		
 		// todo: pick date
 		mEtDeadline.setOnClickListener {
-			deadline = Date()
-			toast("Date picked: $deadline")
+			val ft = activity?.supportFragmentManager?.beginTransaction()
+			ft?.addToBackStack(null)
+			val datePickerDialog = PickDateDialog()
+			datePickerDialog.show(ft, "pick_date")
 		}
 		
 		mBtnSubmitNewRequest.setOnClickListener {

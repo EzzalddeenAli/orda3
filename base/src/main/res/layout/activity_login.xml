@@ -29,7 +29,7 @@
     <EditText
         android:id="@+id/mEtLoginEmail"
         style="@style/Et.WithIcon"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="@dimen/space_medium"
         android:drawableStart="@drawable/ic_email"
         android:hint="@string/email"
         android:inputType="textEmailAddress"
@@ -50,7 +50,7 @@
     <Button
         android:id="@+id/mBtnLogin"
         style="@style/Btn"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="@dimen/space_medium"
         android:text="@string/login"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -61,7 +61,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
         android:background="@null"
         android:text="@string/forget_password"
         android:textSize="15sp"
