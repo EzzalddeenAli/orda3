@@ -115,6 +115,11 @@ class RequestEditFragment : BaseFragment() {
 				FireDB.readAllApplicationsWithRequestId(request.id)
 			}.await()
 			
+			val traveler = async(CommonPool) {
+				FireDB.readUserWithId(request.assignedTo)
+			}.await()
+			mEtAssignedTo.setText(traveler.email)
+			
 			val mApplicationsAdapter = ApplicationsAdapter(applications) { application ->
 				mRequest.assignedTo = application.appliedBy
 				mEtAssignedTo.setText(application.appliedBy)
@@ -130,7 +135,7 @@ class RequestEditFragment : BaseFragment() {
 		mEtTitle.setText(request.title)
 //		mEtDeadline.setText(request.deadline.toString())
 		mEtStatus.setText(getStatusString(request.status))
-		mEtAssignedTo.setText(request.assignedTo)
+		
 		mEtAddress.setText(request.address)
 		mEtCity.setText(request.city)
 		mEtCountry.setText(request.country)
