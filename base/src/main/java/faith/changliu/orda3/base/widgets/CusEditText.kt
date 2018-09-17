@@ -1,9 +1,11 @@
 package faith.changliu.orda3.base.widgets
 
 import android.content.Context
+import android.os.Parcelable
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.AttributeSet
+import android.util.SparseArray
 import android.view.View
 import android.widget.FrameLayout
 import faith.changliu.orda3.base.R
@@ -52,5 +54,9 @@ class CusEditText @JvmOverloads constructor(
 				}
 			}
 		})
+	}
+	
+	override fun dispatchRestoreInstanceState(container: SparseArray<Parcelable>?) {
+	
 	}
 }

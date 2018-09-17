@@ -19,7 +19,7 @@ import java.util.*
 
 open class BaseAccountFragment : BaseFragment() {
 	
-	private var shouldAnimate = true
+	private var shouldSlideIn = true
 	
 	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 		return inflater.inflate(R.layout.fragment_account_base, container, false)
@@ -27,8 +27,14 @@ open class BaseAccountFragment : BaseFragment() {
 	
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
-		shouldAnimate = savedInstanceState == null
-	
+		
+		with(UserPref) {
+			mCusTvEmail.setText(getEmail())
+			mCusEtPhone.text = getPhone()
+			mCusEtName.text = getName()
+			mCusEtZipcode.text = getZipcode().toString()
+		}
+		
 		mBtnUpdateUser.setOnClickListener {
 			getNewUser()?.let { user ->
 				UserPref.mUser = user
@@ -38,18 +44,9 @@ open class BaseAccountFragment : BaseFragment() {
 					}.await()
 					toast("User updated")
 					mBtnUpdateUser.slideOut(100f)
+					shouldSlideIn = true
 				}
 			}
-		}
-	}
-	
-	override fun onResume() {
-		super.onResume()
-		with(UserPref) {
-			mCusTvEmail.setText(getEmail())
-			mCusEtPhone.text = getPhone()
-			mCusEtName.text = getName()
-			mCusEtZipcode.text = getZipcode().toString()
 		}
 		
 		mCusEtZipcode.setOnTextChangeListener { s ->
@@ -69,12 +66,13 @@ open class BaseAccountFragment : BaseFragment() {
 		mCusEtPhone.setOnTextChangeListener {
 			slideIn()
 		}
-		
-		shouldAnimate = true
 	}
 	
 	private fun slideIn() {
-		if (shouldAnimate) mBtnUpdateUser.slideIn(100f)
+		if (shouldSlideIn) {
+			mBtnUpdateUser.slideIn(100f)
+			shouldSlideIn = false
+		}
 	}
 	
 	private fun getNewUser(): User? {

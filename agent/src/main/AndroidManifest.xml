@@ -27,6 +27,7 @@
             android:launchMode="singleTop" />
 
         <activity android:name=".activities.MainActivity"
+            android:configChanges="orientation"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity android:name=".activities.ScannerActivity"
