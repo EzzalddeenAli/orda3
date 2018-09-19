@@ -49,14 +49,21 @@ class ApplicationsAdapter(
 				val ratings = async(CommonPool) {
 					FireDB.readAllRatingsForTravelerId(user.id)
 				}.await()
-
-				var total = 0.0
-				ratings.map { total += it.rate }
-				val avgRating = total / ratings.size
+				
+				var avgRatingString: String = ""
+				if (ratings.isEmpty()) {
+					avgRatingString = "No Rating Yet"
+				} else {
+					val total = ratings.fold(0.0) { acc, rating ->
+						acc + rating.rate
+					}
+					avgRatingString = (total / ratings.size).toString()
+				}
+				
 
 				itemView.apply {
 					mTvName.text = user.name
-					mTvRating.text = avgRating.toString()
+					mTvRating.text = avgRatingString
 
 					mBtnAssign.setOnClickListener {
 						// todo: update request, application, traveler, etc........all at the same time and update views, etc.

@@ -5,8 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import faith.changliu.orda3.agent.R
+import faith.changliu.orda3.base.data.firebase.firestore.FireDB
 import faith.changliu.orda3.base.data.models.Rating
 import kotlinx.android.synthetic.main.cell_rating_agent.view.*
+import kotlinx.coroutines.experimental.CommonPool
+import kotlinx.coroutines.experimental.android.UI
+import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.experimental.launch
 
 class AgentRatingAdapter(val ratings: ArrayList<Rating>) : RecyclerView.Adapter<AgentRatingAdapter.ViewHolder>() {
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -24,8 +29,14 @@ class AgentRatingAdapter(val ratings: ArrayList<Rating>) : RecyclerView.Adapter<
 		fun bind(rating: Rating) {
 			itemView.apply {
 				mCusRatingBar.mRating = rating.rate
-				mCusTvRatingTraveler.setText(rating.travelerId)
 				mCusTvRatingComment.setText(rating.comment)
+				
+				launch(UI) {
+					val traveler = async(CommonPool) {
+						FireDB.readUserWithId(rating.travelerId)
+					}.await()
+					mCusTvRatingTraveler.setText(traveler.email)
+				}
 			}
 		}
 	}

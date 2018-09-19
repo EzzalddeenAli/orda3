@@ -45,11 +45,16 @@ class RatingsListFragment : BaseFragment() {
 				}.await()
 				adapter = TravelerRatingAdapter(ratings)
 				
-				var total = 0.0
-				ratings.map { total += it.rate }
-				val avgRating = total / ratings.size
+				val totalRating = ratings.fold(0.0) { t, rating ->
+					t + rating.rate
+				}
 				
-				mTvAvgRating.text = "Average Rating: $avgRating"
+				if (totalRating == 0.0) {
+					mTvAvgRating.text = "No Rating Yet"
+				} else {
+					val avgRating = totalRating / ratings.size
+					mTvAvgRating.text = "Average Rating: $avgRating"
+				}
 			}
 		}
 	}
