@@ -115,10 +115,12 @@ class RequestEditFragment : BaseFragment() {
 				FireDB.readAllApplicationsWithRequestId(request.id)
 			}.await()
 			
-			val traveler = async(CommonPool) {
-				FireDB.readUserWithId(request.assignedTo)
-			}.await()
-			mEtAssignedTo.setText(traveler.email)
+			if (request.assignedTo.isNotEmpty()) {
+				val traveler = async(CommonPool) {
+					FireDB.readUserWithId(request.assignedTo)
+				}.await()
+				mEtAssignedTo.setText(traveler.email)
+			}
 			
 			val mApplicationsAdapter = ApplicationsAdapter(applications) { application ->
 				mRequest.assignedTo = application.appliedBy
