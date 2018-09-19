@@ -124,9 +124,16 @@ class RequestEditFragment : BaseFragment() {
 			
 			val mApplicationsAdapter = ApplicationsAdapter(applications) { application ->
 				mRequest.assignedTo = application.appliedBy
-				mEtAssignedTo.setText(application.appliedBy)
-				mEtStatus.setText(getStatusString(RequestStatus.ASSIGNED))
-				toast("Assigned. Please submit to confirm.")
+				
+				tryBlock {
+					val traveler = async(CommonPool) {
+						FireDB.readUserWithId(request.assignedTo)
+					}.await()
+					
+					mEtAssignedTo.setText(traveler.email)
+					mEtStatus.setText(getStatusString(RequestStatus.ASSIGNED))
+					toast("Assigned. Please submit to confirm.")
+				}
 			}
 			
 			mRcvApplications.adapter = mApplicationsAdapter
