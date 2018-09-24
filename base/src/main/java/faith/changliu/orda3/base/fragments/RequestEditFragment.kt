@@ -187,7 +187,7 @@ class RequestEditFragment : BaseFragment() {
 		val compensation = mEtCompensation.getDouble() ?: return
 		val description = mEtDescription.getString() ?: return
 
-		val newRequest = Request(mRequest.id, title, getStatus(mEtStatus.text.toString()), mEtAssignedTo.text.toString(), mDeadline, country, city, address, weight, volume, compensation, description, mRequest.createdAt, UserPref.getId(), UserPref.getEmail())
+		val newRequest = Request(mRequest.id, title, getStatus(mEtStatus.text.toString()), mRequest.assignedTo, mDeadline, country, city, address, weight, volume, compensation, description, mRequest.createdAt, UserPref.getId(), UserPref.getEmail())
 
 		tryBlock {
 			async(CommonPool) {
